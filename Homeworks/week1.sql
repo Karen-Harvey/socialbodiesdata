@@ -33,3 +33,14 @@ LEFT JOIN researchdata_slgeneric genplr ON lp.person_letter_relationship_id = ge
 where genplr.name = 'primary author';
 
 -- Question 6
+select lp.id as 'letter person', gen_ba.name as 'bodily activity'
+from researchdata_letterperson lp 
+LEFT JOIN researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id
+LEFT JOIN researchdata_slgeneric gen_ba on lpba.slletterpersonbodilyactivity_id = gen_ba.id;
+
+--Question 7
+elect lp.id as 'letter person', gen_ba.name as 'bodily activity'
+from researchdata_letterperson lp 
+LEFT JOIN researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id
+LEFT JOIN researchdata_slgeneric gen_ba on lpba.slletterpersonbodilyactivity_id = gen_ba.id
+where gen_ba.name = 'writing'
