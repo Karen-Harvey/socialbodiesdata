@@ -18,6 +18,18 @@ from researchdata_letterperson rl
 left join researchdata_person rp on rl.person_id = rp.id;
 
 -- Question 4
+select lp.id, letter.title, person.first_name, person.last_name, genplr.name as 'person letter relationship'
+from researchdata_letterperson lp 
+LEFT JOIN researchdata_letter letter ON lp.letter_id = letter.id
+LEFT JOIN researchdata_person person ON lp.person_id = person.id
+LEFT JOIN researchdata_slgeneric genplr ON lp.person_letter_relationship_id = genplr.id;
 
+-- Question 5
+select lp.id, letter.title, person.first_name, person.last_name, genplr.name as 'person letter relationship'
+from researchdata_letterperson lp 
+LEFT JOIN researchdata_letter letter ON lp.letter_id = letter.id
+LEFT JOIN researchdata_person person ON lp.person_id = person.id
+LEFT JOIN researchdata_slgeneric genplr ON lp.person_letter_relationship_id = genplr.id
+where genplr.name = 'primary author';
 
-
+-- Question 6
