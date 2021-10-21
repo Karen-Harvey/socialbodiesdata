@@ -1,0 +1,5 @@
+--To find letters with no date and record creator:
+
+select id, title, sent_date_year, created_by_id
+from researchdata_letter letter
+where sent_date_year is NULL
