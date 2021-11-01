@@ -1,0 +1,79 @@
+Single many to many joins:
+1.	Build a list of all letter person records and their bodily activities (showing 2 columns: letter person id, bodily activity name)
+
+select lp.id as 'letter person', gen_ba.name as 'bodily activity'
+from researchdata_letterperson lp 
+left join researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id
+left join researchdata_slgeneric gen_ba on lpba.slletterpersonbodilyactivity_id = gen_ba.id;
+
+
+2.	Show all letter person records and bodily activities (i.e. the above list) but only for the bodily activity of ‘travel’
+
+select  lp.id as 'letter person', gen_ba.name as 'bodily activity'
+from researchdata_letterperson lp 
+left join researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id
+left join researchdata_slgeneric gen_ba on lpba.slletterpersonbodilyactivity_id = gen_ba.id
+where gen_ba.name = 'travel'
+
+
+3.	How many letter person records relate to the ‘travel’ bodily activity? (tip: use the count() function)
+
+select count (*)
+from researchdata_letterperson lp 
+left join researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id
+left join researchdata_slgeneric gen_ba on lpba.slletterpersonbodilyactivity_id = gen_ba.id
+where gen_ba.name = 'travel'
+
+Answer = 517 
+
+4.	Repeat the first 3 questions for ‘emotions’ (limit by ‘regret’)
+
+select rl.id as 'letter person', rs.name as 'emotion'
+from researchdata_letterperson rl 
+left join researchdata_letterperson_emotion rle on rl.id = rle.id 
+left join researchdata_slgeneric rs on rle.slletterpersonemotion_id = rs.id
+
+
+select rl.id as 'letter person', rs.name as 'emotion'
+from researchdata_letterperson rl 
+left join researchdata_letterperson_emotion rle on rl.id = rle.id 
+left join researchdata_slgeneric rs on rle.slletterpersonemotion_id = rs.id
+where rs.name = 'regret'
+
+select count (*)
+from researchdata_letterperson rl 
+left join researchdata_letterperson_emotion rle on rl.id = rle.id 
+left join researchdata_slgeneric rs on rle.slletterpersonemotion_id = rs.id
+where rs.name = 'regret'
+
+Answer = 91
+ 
+Multiple many to joins
+
+5.	Repeat the first 3 questions but for a combination of ‘sensations’ (limit by ‘pain’) and ‘roles’ (limit by ‘motherhood’) in a single list.
+(Tip: Your list for this question should now show 3 columns: letter person id, sensation name, and role name. Limiting the list (i.e. using the where clause) should be done using ‘pain’ AND ‘motherhood’.
+ 
+ select rl.id as 'letter person', rs.name as 'sensation', rs2.name as 'role name'
+from researchdata_letterperson rl 
+left join researchdata_letterperson_sensation rls on rl.id = rls.id
+left join researchdata_slgeneric rs on rls.slletterpersonsensation_id = rs.id 
+left join researchdata_letterperson_roles rlr on rl.id = rlr.id 
+left join researchdata_slgeneric rs2 on rlr.slletterpersonrole_id = rs2.id
+
+select rl.id as 'letter person', rs.name as 'sensation', rs2.name as 'role name'
+from researchdata_letterperson rl 
+left join researchdata_letterperson_sensation rls on rl.id = rls.id
+left join researchdata_slgeneric rs on rls.slletterpersonsensation_id = rs.id 
+left join researchdata_letterperson_roles rlr on rl.id = rlr.id 
+left join researchdata_slgeneric rs2 on rlr.slletterpersonrole_id = rs2.id
+where rs.name = 'pain' and rs2.name = 'motherhood'
+
+select count (*) 
+from researchdata_letterperson rl 
+left join researchdata_letterperson_sensation rls on rl.id = rls.id
+left join researchdata_slgeneric rs on rls.slletterpersonsensation_id = rs.id 
+left join researchdata_letterperson_roles rlr on rl.id = rlr.id 
+left join researchdata_slgeneric rs2 on rlr.slletterpersonrole_id = rs2.id
+where rs.name = 'pain' and rs2.name = 'motherhood'
+
+Answer = 8
