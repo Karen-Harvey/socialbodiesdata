@@ -1,0 +1,70 @@
+Single many to many joins:
+
+1.	Build a list of all letter person records and their bodily activities (showing 2 columns: letter person id, bodily activity name)
+
+select lp.id, rs.name
+from researchdata_person rp
+left join researchdata_letterperson lp on rp.id = lp.person_id 
+left join researchdata_letterperson_bodily_activity rlba on rlba.id = lp.id
+left join researchdata_slgeneric rs on rlba.slletterpersonbodilyactivity_id = rs.id
+
+How do I check that the data returned for this is correct (if, indeed, it is?!)  If you remove the rl table this will also return data but the id is consecutive so it is easy to see the error, but not so easy with this code.
+
+Actually, I know this isn’t right because when I limit the search by letterperson.id (eg lp.id = 1908) I just get one bodily activity despite the potential for there to be multiple bodily activities per letter person.  I can’t figure out what I’ve done wrong here.
+
+Total if I count = 2,230
+
+2.	Show all letter person records and bodily activities (i.e. the above list) but only for the bodily activity of ‘travel’
+
+select lp.id, rs.name
+from researchdata_person rp
+left join researchdata_letterperson lp on rp.id = lp.person_id 
+left join researchdata_letterperson_bodily_activity rlba on rlba.id = lp.id
+left join researchdata_slgeneric rs on rlba.slletterpersonbodilyactivity_id = rs.id
+where rs.name is 'travel'
+
+3.	How many letter person records relate to the ‘travel’ bodily activity? (tip: use the count() function)
+
+select count (*)
+from researchdata_person rp
+left join researchdata_letterperson lp on rp.id = lp.person_id 
+left join researchdata_letterperson_bodily_activity rlba on rlba.id = lp.id
+left join researchdata_slgeneric rs on rlba.slletterpersonbodilyactivity_id = rs.id
+where rs.name is 'travel'
+
+Total returns = 218
+
+4.	Repeat the first 3 questions for ‘emotions’ (limit by ‘regret’)
+
+select lp.id, rs.name 
+from researchdata_person rp
+left join researchdata_letterperson lp on rp.id = lp.person_id 
+left join researchdata_letterperson_emotion rle on rle.id = lp.id
+left join researchdata_slgeneric rs on rle.slletterpersonemotion_id = rs.id
+where rs.name is 'regret'
+
+Total returns = 70
+
+Multiple many to joins
+
+5.	Repeat the first 3 questions but for a combination of ‘sensations’ (limit by ‘pain’) and ‘roles’ (limit by ‘motherhood’) in a single list. 
+(Tip: Your list for this question should now show 3 columns: letter person id, sensation name, and role name. Limiting the list (i.e. using the where clause) should be done using ‘pain’ AND ‘motherhood’.
+
+I can’t quite get this one.  Below are my two ‘nearly’ attempts neither of which work.
+
+select lp.id, rs.name sensation, rs2.name roles
+from researchdata_person rp 
+left join researchdata_letterperson lp on rp.id = lp.person_id 
+left join researchdata_letterperson_sensation rls on rls.slletterpersonsensation_id = lp.id 
+left join researchdata_slgeneric rs on rls.slletterpersonsensation_id = rs.id 
+left join researchdata_letterperson_roles rlr on rlr.slletterpersonrole_id = lp.id
+left join researchdata_slgeneric rs2 on rlr.slletterpersonrole_id = rs2.id
+where name is 'pain' AND 'motherhood'
+
+select lp.id, rs.name
+from researchdata_person rp
+left join researchdata_letterperson lp on rp.id = lp.person_id 
+left join researchdata_letterperson_sensation rls on rls.slletterpersonsensation_id = lp.id 
+left join researchdata_letterperson_roles rlr on rlr.slletterpersonrole_id = lp.id 
+left join researchdata_slgeneric rs on rls.slletterpersonsensation_id and rlr.slletterpersonrole_id = rs.id
+where rs.name = 'pain' and 'motherhood'
