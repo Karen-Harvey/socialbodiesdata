@@ -1,6 +1,6 @@
 -- bodily activity
 
-select lp.*, slletterpersonbodilyactivity.name
+select lp.id, slletterpersonbodilyactivity.name
 from researchdata_letterperson lp
 LEFT JOIN researchdata_letterperson_bodily_activity letterperson_bodily_activity ON lp.id = letterperson_bodily_activity.letterperson_id
 LEFT JOIN researchdata_slgeneric slletterpersonbodilyactivity ON letterperson_bodily_activity.slletterpersonbodilyactivity_id = slletterpersonbodilyactivity.id
