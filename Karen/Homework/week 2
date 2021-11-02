@@ -1,0 +1,85 @@
+1.	Build a list of all letter person records and their bodily activities (showing 2 columns: letter person id, bodily activity name)
+
+select letterperson_id, genba.name as 'bodily activity' 
+from researchdata_letterperson_bodily_activity lpba
+left join researchdata_slgeneric genba on slletterpersonbodilyactivity_id = genba.id
+
+2.	Show all letter person records and bodily activities (i.e. the above list) but only for the bodily activity of ‘travel’
+
+select letterperson_id, genba.name as 'bodily activity' 
+from researchdata_letterperson_bodily_activity lpba
+left join researchdata_slgeneric genba on slletterpersonbodilyactivity_id = genba.id
+where genba.name is 'travel'
+
+3.	How many letter person records relate to the ‘travel’ bodily activity? (tip: use the count() function)
+
+select count (*) letterperson_id, genba.name as 'bodily activity' 
+from researchdata_letterperson_bodily_activity lpba
+left join researchdata_slgeneric genba on slletterpersonbodilyactivity_id = genba.id
+where genba.name is 'travel'
+
+4.	Repeat the first 3 questions for ‘emotions’ (limit by ‘regret’)
+ 
+select letterperson_id, genem.name as 'emotion' 
+from researchdata_letterperson_emotion lpe
+left join researchdata_slgeneric genem on slletterpersonemotion_id = genem.id
+
+select letterperson_id, genem.name as 'emotion' 
+from researchdata_letterperson_emotion lpe
+left join researchdata_slgeneric genem on slletterpersonemotion_id = genem.id
+where genem.name is 'regret'
+
+select count (*) letterperson_id, genem.name as 'emotion' 
+from researchdata_letterperson_emotion lpe
+left join researchdata_slgeneric genem on slletterpersonemotion_id = genem.id
+where genem.name is 'regret'
+
+Multiple many to joins
+5.	Repeat the first 3 questions but for a combination of ‘sensations’ (limit by ‘pain’) and ‘roles’ (limit by ‘motherhood’) in a single list.
+(Tip: Your list for this question should now show 3 columns: letter person id, sensation name, and role name. Limiting the list (i.e. using the where clause) should be done using ‘pain’ AND ‘motherhood’.
+ 
+ANSWER to ‘pain’ and ‘motherhood’:
+select lpsen.letterperson_id, gensen.name as 'sensation', genrole.name as 'role' 
+from researchdata_letterperson_sensation lpsen
+left join researchdata_slgeneric gensen on slletterpersonsensation_id = gensen.id
+left join researchdata_letterperson_roles lprole  
+left join researchdata_slgeneric genrole on lprole.slletterpersonrole_id = genrole.id 
+where gensen.name IS 'pain' and genrole.name is 'motherhood';
+
+Workings out:
+[select letterperson_id, gensen.name as 'sensation'
+from researchdata_letterperson_sensation lpsen
+left join researchdata_slgeneric gensen on slletterpersonsensation_id = gensen.id
+
+select *
+from researchdata_letterperson_sensation lpsen
+left join researchdata_slgeneric gensen on slletterpersonsensation_id = gensen.id
+left join researchdata_letterperson_roles lprole]
+
+ANSWER TO ‘pain’ and all ‘roles’
+
+select lpsen.letterperson_id, gensen.name as 'sensation', genrole.name as 'role' 
+from researchdata_letterperson_sensation lpsen
+left join researchdata_slgeneric gensen on slletterpersonsensation_id = gensen.id
+left join researchdata_letterperson_roles lprole  
+left join researchdata_slgeneric genrole on lprole.slletterpersonrole_id = genrole.id 
+where gensen.name = 'pain'
+
+To count pain refs:
+
+select count (*), lpsen.letterperson_id, gensen.name as 'sensation', genrole.name as 'role' 
+from researchdata_letterperson_sensation lpsen
+left join researchdata_slgeneric gensen on slletterpersonsensation_id = gensen.id
+left join researchdata_letterperson_roles lprole  
+left join researchdata_slgeneric genrole on lprole.slletterpersonrole_id = genrole.id 
+where gensen.name = 'pain'
+
+Total pain = 178,869?!
+
+To count refs with ‘pain’ and ‘motherhood’:
+select count (*), lpsen.letterperson_id, gensen.name as 'sensation', genrole.name as 'role' 
+from researchdata_letterperson_sensation lpsen
+left join researchdata_slgeneric gensen on slletterpersonsensation_id = gensen.id
+left join researchdata_letterperson_roles lprole  
+left join researchdata_slgeneric genrole on lprole.slletterpersonrole_id = genrole.id 
+where gensen.name IS 'pain' and genrole.name is 'motherhood';
