@@ -1,5 +1,51 @@
+2 = Karen
+3 = Sarah
+4 = Emily
+
 --To find letters with no date and record creator:
 
 select id, title, sent_date_year, created_by_id
-from researchdata_letter letter
+from researchdata_letter l
 where sent_date_year is NULL
+order by created_by_id
+
+-- To find persons with no relationship to letter and record creator:
+
+SELECT id, person_id, person_form_of_address, person_other, person_letter_relationship_id, created_by_id 
+from researchdata_letterperson lp 
+where person_letter_relationship_id is NULL
+order by created_by_id
+
+-- To find persons with no gender and record creator:
+
+select id, first_name, last_name, gender_id, created_by_id 
+from researchdata_person p
+where gender_id is NULL 
+order by created_by_id
+
+-- To find missing sent from locations:
+
+select id, title, sent_from_location, created_by_id 
+from researchdata_letter l
+where sent_from_location is null
+-- sort column sent_from_location and if asked to filter cleck the empty (ie. no data) box 
+
+-- To find missing sent to locations:
+
+select id, title, sent_to_location, created_by_id 
+from researchdata_letter l
+-- sort column sent_from_location and if asked to filter cleck the empty (ie. no data) box 
+
+-- To find sent from locations not containing country:
+
+select id, title, sent_from_location, created_by_id 
+from researchdata_letter l
+where sent_from_location not like "England"
+-- can repeat with "Wales", "scotland", "ireland"
+
+-- To find sent to locations not containing country:
+
+select id, title, sent_to_location , created_by_id 
+from researchdata_letter l
+where sent_to_location not like "England"
+-- can repeat with "Wales", "scotland", "ireland"
