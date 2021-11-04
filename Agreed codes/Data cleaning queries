@@ -27,7 +27,6 @@ order by created_by_id
 
 select id, title, sent_from_location, created_by_id 
 from researchdata_letter l
-where sent_from_location is null
 -- sort column sent_from_location and if asked to filter cleck the empty (ie. no data) box 
 
 -- To find missing sent to locations:
