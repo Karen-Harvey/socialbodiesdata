@@ -1,4 +1,4 @@
-select id, title, sent_date_year, transcription_normalized
+select id, title, sent_date_year, transcription_plain 
 from researchdata_letter l
-where transcription_plain LIKE '%beaut%' 
+where transcription_normalized LIKE '%ugly%' 
 order by sent_date_year asc 
