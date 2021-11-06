@@ -1,0 +1,4 @@
+select id, title, sent_date_year, transcription_normalized
+from researchdata_letter l
+where transcription_plain LIKE '%beaut%' 
+order by sent_date_year asc 
