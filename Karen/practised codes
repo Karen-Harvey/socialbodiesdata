@@ -1,0 +1,25 @@
+Aggregate functions
+
+Count:
+select count (*)
+from researchdata_letterperson_body_part lpbp
+where slletterpersonbodypart_id = 365
+
+Count and group by:
+select sent_date_year, count (*) 
+from researchdata_letter l
+group by sent_date_year 
+--order by count(*) desc  
+
+Count and group by, using 'having' to limit on the aggregate:
+select sent_date_year, count (*) 
+from researchdata_letter l
+group by sent_date_year 
+having count (*) > 20
+order by count(*) desc  
+
+select sent_date_year, count (*) 
+from researchdata_letter l
+group by sent_date_year 
+having count (*) < 5
+order by count(*) asc
