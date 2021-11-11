@@ -11,6 +11,38 @@ from researchdata_letter l
 group by sent_date_year 
 --order by count(*) desc  
 
+Count and group by rank: [only persons]
+[all]
+select genrank.name as 'person rank', count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
+LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
+group by genrank.id;
+
+[all by gender]
+select gengen.name as "gender", count (*), genrank.name as 'person rank', count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
+LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+group by genrank.id, p.gender_id 
+
+[men]
+select genrank.name as 'person rank', count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
+LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
+where p.gender_id is 1
+group by genrank.id;
+
+[women]
+select genrank.name as 'person rank', count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
+LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
+where p.gender_id is 2
+group by genrank.id;
+
 Count and group by gender:
 [Persons]
 select gengen.name as 'person gender', count (*)
