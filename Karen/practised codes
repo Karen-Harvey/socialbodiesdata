@@ -81,11 +81,22 @@ left join researchdata_slgeneric genbp on lpbp.slletterpersonbodypart_id = genbp
 group by slletterpersonbodypart_id
 
 [emotion]
+[all letter persons]
 select genem.name as 'emotion', count (*)
 from researchdata_letterperson_emotion lpem
 left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
 group by slletterpersonemotion_id
 order by count (*) desc
+
+[all letterpersons with an assigned gender]
+select genem.name as 'emotion', count (*)
+from researchdata_letterperson_emotion lpem
+LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
+where lp.person_other_gender_id is null and p.gender_id is not null
+group by slletterpersonemotion_id
+order by count (*) desc; 
 
 Emotion by person gender:
 [men - all records]
@@ -98,21 +109,23 @@ LEFT JOIN researchdata_slgeneric genem ON lpem.slletterpersonemotion_id = genem.
 where p.gender_id is 1
 
 [men - count]
-select lp.id, genem.name as "emotion", count * 
-from researchdata_letterperson lp
-LEFT JOIN researchdata_letter l ON lp.letter_id = l.id
-LEFT JOIN researchdata_person p ON lp.person_id = p.id
-LEFT JOIN researchdata_letterperson_emotion lpem ON lp.id = lpem.letterperson_id
-LEFT JOIN researchdata_slgeneric genem ON lpem.slletterpersonemotion_id = genem.id 
-where p.gender_id is 1
-
-[women - all records]
 select genem.name as 'emotion', count (*)
 from researchdata_letterperson_emotion lpem
 LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
 LEFT JOIN researchdata_person p ON lp.person_id = p.id
 left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
 where p.gender_id is 1
+group by slletterpersonemotion_id
+order by count (*) desc
+
+[women - all records]
+select lp.id, lp.letter_id, p.first_name, p.last_name, genem.name as "emotion"
+from researchdata_letterperson lp
+LEFT JOIN researchdata_letter l ON lp.letter_id = l.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+LEFT JOIN researchdata_letterperson_emotion lpem ON lp.id = lpem.letterperson_id
+LEFT JOIN researchdata_slgeneric genem ON lpem.slletterpersonemotion_id = genem.id 
+where p.gender_id is 2
 group by slletterpersonemotion_id
 order by count (*) desc
 
