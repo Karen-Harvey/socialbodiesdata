@@ -11,6 +11,23 @@ from researchdata_letter l
 group by sent_date_year 
 --order by count(*) desc  
 
+Count place by country:
+[England]
+select count (*)
+from researchdata_letter l
+where sent_from_location like '%england%'
+
+[those not England]
+select sent_from_location 
+from researchdata_letter l
+where sent_from_location not like '%england%'
+
+Count persons V letterpersons == persons
+select count (*)
+from researchdata_letterperson lp
+--where lp.person_id is null
+--where lp.person_id is not null
+
 Count and group by rank: [only persons]
 [all]
 select genrank.name as 'person rank', count (*)
@@ -20,12 +37,12 @@ LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
 group by genrank.id;
 
 [all by gender]
-select gengen.name as "gender", count (*), genrank.name as 'person rank', count (*)
+select genrank.name as 'person rank', gengen.name as "gender", count (*)
 from researchdata_person p
 LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
 LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
 left join researchdata_slgeneric gengen on p.gender_id = gengen.id
-group by genrank.id, p.gender_id 
+group by genrank.id, p.gender_id
 
 [men]
 select genrank.name as 'person rank', count (*)
@@ -42,6 +59,22 @@ LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
 LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
 where p.gender_id is 2
 group by genrank.id;
+
+Count and group by religion:
+[all persons]
+select genrel.name as 'person religion', count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+group by genrel.id;
+
+[all persons & gender]
+select genrel.name as 'person religion', gengen.name as "gender", count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+group by genrel.id, p.gender_id;
 
 Count and group by gender:
 [Persons]
