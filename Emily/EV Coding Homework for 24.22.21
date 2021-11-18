@@ -1,0 +1,45 @@
+
+-- How many people are identified as ‘quaker’ or ‘Methodist’ 
+
+select genrel.name as 'person religion', count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+Where genrel.name = 'quaker' or genrel.name = 'methodist'
+group by genrel.id 
+
+
+-- Write a query to show person religion where letter commentary is ‘religious’ 
+
+select count (*), genrel.name as 'person religion', gencom.name as 'commentary'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id
+left join researchdata_person p on lp.person_id = p.id
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+left join researchdata_letter_commentary lcom ON l.id = lcom.letter_id
+left join researchdata_slgeneric gencom on lcom.sllettercommentary_id = gencom.id
+where gencom.name = 'religious'
+group by genrel.name
+
+
+--Write a query to show person religion where bodily activity is ‘devotional practice’ 
+
+select count (*), genrel.name as 'person religion', genba.name as 'bodily activity'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id 
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+left join researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id 
+left join researchdata_slgeneric genba on lpba.slletterpersonbodilyactivity_id = genba.id 
+where genba.name = "devotional practice"
+group by genrel.id
+
+
+--Write a query to show frequency of ‘providence’ by decade
+
+select count (*), SUBSTRING(l.sent_date_year, 0, 4) as "decades"
+from researchdata_letter l
+where l.transcription_normalized LIKE '%providence%'
+group by "decades"
