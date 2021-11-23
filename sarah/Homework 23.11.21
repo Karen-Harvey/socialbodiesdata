@@ -1,0 +1,72 @@
+SF Coding Homework 23.11.21
+1.	Write a query to count all ‘ageing’ or ‘old age’ letter persons.
+select COUNT (*), rs.name 'lifestage'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id
+where rs.name = 'old age' or rs.name = 'ageing'
+group by rs.name;
+
+2.	Write a query to find all ‘ageing’ or ‘old age’ letter persons where their emotion is ‘happy’.
+select l.id, rs.name 'lifestage', rs2.name 'emotion'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id
+left join researchdata_letterperson_emotion emotion on lp.letter_id = emotion.letterperson_id 
+left join researchdata_slgeneric rs2 on emotion.slletterpersonemotion_id = rs2.id
+where rs.name = 'old age' or rs.name = 'ageing'
+order by rs2.name
+This is a really interesting outcome, as it groups references to age and ageing with emotion, but I can’t seem to restrict it to just ‘happy’ emotions. This makes things tricky for my next question!
+Aha! I did it! Nearly. The only issue is that it displays ‘lifestage’ as the first column listed in brackets. There are 26 in total – 22 for ‘ageing’ and ‘happy’; and 4 for ‘old age’ and ‘happy’.
+select count (*), l.id, rs.name 'lifestage', rs2.name 'emotion'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id
+left join researchdata_letterperson_emotion emotion on lp.letter_id = emotion.letterperson_id 
+left join researchdata_slgeneric rs2 on emotion.slletterpersonemotion_id = rs2.id
+where rs2.name = 'happy' and (rs.name = 'old age' or rs.name = 'ageing');
+
+3.	Group all the happy old people by decade.
+select l.id, rs.name 'lifestage', rs2.name 'emotion', substring(l.sent_date_year, 0, 4) as 'decade'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id
+left join researchdata_letterperson_emotion emotion on lp.letter_id = emotion.letterperson_id 
+left join researchdata_slgeneric rs2 on emotion.slletterpersonemotion_id = rs2.id
+where rs2.name = 'happy' and (rs.name = 'ageing' or rs.name = 'ageing')
+order by l.sent_date_year;
+This is really interesting – I’ve used the ‘select distinct’ function to remove duplicates, and there are appears to be 6 letters where ageing and happy are mentioned:
+select distinct l.id, rs.name 'lifestage', rs2.name 'emotion', substring(l.sent_date_year, 0, 4) as 'decade'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id
+left join researchdata_letterperson_emotion emotion on lp.letter_id = emotion.letterperson_id 
+left join researchdata_slgeneric rs2 on emotion.slletterpersonemotion_id = rs2.id
+where rs2.name = 'happy' and (rs.name = 'ageing' or rs.name = 'ageing')
+order by l.sent_date_year;
+
+4.	Write a query to find all letters in which ‘decline’ is mentioned as well as ‘old age’ and ‘ageing’.
+Another fascinating result (if it is correct)! There are only two letters where age and ageing are mentioned in specific life stage where ‘decline’ is mentioned in the body of the letter. 
+select distinct l.id, l.transcription_normalized 
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id
+where l.transcription_normalized like '%decline%' and (rs.name = 'ageing' or rs.name = 'old age');
+
+5.	I’ve got a bit over-excited now so just thought I’d try my gout query…
+Do we think this is correct? Five letterpersons where old age/ageing and gout are tagged?
+select distinct l.id, rs.name 'lifestage', rs2.name 'emotion', substring(l.sent_date_year, 0, 4) as 'decade'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id
+left join researchdata_letterperson_condition_specific_state state on lp.letter_id = state.letterperson_id 
+left join researchdata_slgeneric rs2 on state.slletterpersonconditionspecificstate_id = rs2.id
+where rs2.name = 'gout' and (rs.name = 'old age' or rs.name = 'ageing')
+
