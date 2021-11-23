@@ -1,11 +1,11 @@
 Aggregate functions
 
-Count:
+Count: [nose]
 select count (*)
 from researchdata_letterperson_body_part lpbp
 where slletterpersonbodypart_id = 365
 
-Count and group by:
+Count and group by year sent:
 select sent_date_year, count (*) 
 from researchdata_letter l
 group by sent_date_year 
@@ -22,11 +22,19 @@ select sent_from_location
 from researchdata_letter l
 where sent_from_location not like '%england%'
 
-Count persons V letterpersons == persons
+Count persons V letterpersons 
 select count (*)
 from researchdata_letterperson lp
 --where lp.person_id is null
 --where lp.person_id is not null
+
+Count persons who have letterperson records by gender
+select gengen.name as "gender", count (*)
+from researchdata_letterperson lp
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where p.gender_id is not null
+group by p.gender_id;
 
 Count and group by rank: [only persons]
 [all]
@@ -90,7 +98,7 @@ left join researchdata_slgeneric genothergen on lp.person_other_gender_id = geno
 --where lp.person_id is null
 group by person_other_gender_id
 
-Count letterperson by relationships to letter:
+Count letterperson by relationship to letter:
 select genrel.name as 'relationship to letter', count (*)
 from researchdata_letterperson lp
 left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
@@ -112,14 +120,6 @@ where lp.person_other_gender_id is 377
 group by genrel.id
 
 [men and women]
-select genlpothergen.name, genrel.name as 'relationship to letter', count (*) as "gender"
-from researchdata_letterperson lp
-left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
-left join researchdata_slgeneric genlpothergen on lp.person_other_gender_id = genlpothergen.id
-where lp.person_other_gender_id is 376 or 377
-group by genrel.id, lp.person_other_gender_id
-
-Count other person by relationship to letter and gender: 
 select genlpothergen.name as 'lp other gender', genrel.name as 'relationship to letter', count (*) as "number"
 from researchdata_letterperson lp
 left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
@@ -146,14 +146,15 @@ left join researchdata_slgeneric genbp on lpbp.slletterpersonbodypart_id = genbp
 group by slletterpersonbodypart_id
 
 [emotion]
-[all letter persons]
+[all letter persons count]
 select genem.name as 'emotion', count (*)
 from researchdata_letterperson_emotion lpem
 left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
 group by slletterpersonemotion_id
 order by count (*) desc
 
-[all letterpersons with an assigned gender]
+Emotion by person gender:
+[all letterpersons with person records and an assigned gender count]
 select genem.name as 'emotion', count (*)
 from researchdata_letterperson_emotion lpem
 LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
@@ -163,7 +164,16 @@ where lp.person_other_gender_id is null and p.gender_id is not null
 group by slletterpersonemotion_id
 order by count (*) desc; 
 
-Emotion by person gender:
+[all letterpersons with person records and an assigned gender count by gender]
+select genem.name as 'emotion', gengen.name as "gender", count (*)
+from researchdata_letterperson_emotion lpem
+LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where lp.person_other_gender_id is null and p.gender_id is not null
+group by slletterpersonemotion_id, p.gender_id;
+
 [men - all records]
 select lp.id, lp.letter_id, p.first_name, p.last_name, genem.name as "emotion"
 from researchdata_letterperson lp
@@ -203,6 +213,27 @@ left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.
 where p.gender_id is 2
 group by slletterpersonemotion_id
 order by count (*) desc
+
+Count all letterperson as persons by emotion, gender and rank:
+select genrank.name as 'person rank', gengen.name as "gender", genem.name as 'emotion', count (*)
+from researchdata_letterperson_emotion lpem
+LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
+LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
+where lp.person_other_gender_id is null and p.gender_id is not null and prank.person_id is not null
+group by slletterpersonemotion_id, p.gender_id, genrank.id;
+
+Emotion for other letter person (not persons) by gender:
+select genem.name as 'emotion', genothergen.name as "(other) gender", count (*)
+from researchdata_letterperson_emotion lpem
+LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
+left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+where lp.person_other_gender_id is not null
+group by slletterpersonemotion_id, genothergen.id;
 
 Count and group by, using 'having' to limit on the aggregate:
 select sent_date_year, count (*) 
