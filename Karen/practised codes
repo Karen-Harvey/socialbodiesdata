@@ -1,9 +1,8 @@
 Aggregate functions
 
-Count: [nose]
+Total number of letters:
 select count (*)
-from researchdata_letterperson_body_part lpbp
-where slletterpersonbodypart_id = 365
+from researchdata_letter l
 
 Count and group by year sent:
 select sent_date_year, count (*) 
@@ -22,13 +21,28 @@ select sent_from_location
 from researchdata_letter l
 where sent_from_location not like '%england%'
 
+[France]
+select count (*)
+from researchdata_letter l
+where sent_from_location like '%france%'
+
+How many of our letterperson records do not have a person record and vice versa?
 Count persons V letterpersons 
 select count (*)
 from researchdata_letterperson lp
 --where lp.person_id is null
 --where lp.person_id is not null
 
-Count persons who have letterperson records by gender
+Count and group by gender:
+How many of our persons are male and female?
+[Persons]
+select gengen.name as 'person gender', count (*)
+from researchdata_person p
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+group by gender_id
+
+How many of all letterpersons are male and female? [we need to do two separate calculations, I think?]
+Count letterperson records who have a person record by gender (excluding those that do not have a gender):
 select gengen.name as "gender", count (*)
 from researchdata_letterperson lp
 LEFT JOIN researchdata_person p ON lp.person_id = p.id
@@ -36,6 +50,15 @@ left join researchdata_slgeneric gengen on p.gender_id = gengen.id
 where p.gender_id is not null
 group by p.gender_id;
 
+How many of our letterpersons (without a person id) are male and female? 
+[Letter persons other]
+select genothergen.name as 'other gender', count (*)
+from researchdata_letterperson lp 
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
+where lp.person_id is null
+group by person_other_gender_id
+
+How many persons are there of each rank?
 Count and group by rank: [only persons]
 [all]
 select genrank.name as 'person rank', count (*)
@@ -44,12 +67,14 @@ LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
 LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
 group by genrank.id;
 
+How many persons of each gender are there in each rank?
 [all by gender]
 select genrank.name as 'person rank', gengen.name as "gender", count (*)
 from researchdata_person p
 LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
 LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
 left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where gengen.id is not null
 group by genrank.id, p.gender_id
 
 [men]
@@ -68,6 +93,7 @@ LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
 where p.gender_id is 2
 group by genrank.id;
 
+How many persons are there of each religion?
 Count and group by religion:
 [all persons]
 select genrel.name as 'person religion', count (*)
@@ -76,28 +102,17 @@ LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
 LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
 group by genrel.id;
 
+How many persons of each gender are there in each religion?
 [all persons & gender]
 select genrel.name as 'person religion', gengen.name as "gender", count (*)
 from researchdata_person p
 LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
 LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
 left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+--where p.gender_id is not null
 group by genrel.id, p.gender_id;
 
-Count and group by gender:
-[Persons]
-select gengen.name as 'person gender', count (*)
-from researchdata_person p
-left join researchdata_slgeneric gengen on p.gender_id = gengen.id
-group by gender_id
-
-[Letter persons other]
-select genothergen.name as 'other gender', count (*)
-from researchdata_letterperson lp 
-left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
---where lp.person_id is null
-group by person_other_gender_id
-
+What are the relationships to letters of the letterpersons?
 Count letterperson by relationship to letter:
 select genrel.name as 'relationship to letter', count (*)
 from researchdata_letterperson lp
@@ -128,6 +143,7 @@ where lp.person_other_gender_id is 376 or 377
 --where lp.person_other_gender_id is not null
 group by genrel.id, lp.person_other_gender_id
 
+To get all results on letterperson gender/relationship to letter we also need to ask about the letterperson with person.id: 
 Count letterperson person by relationship to letter and gender:
 select genpgen.name as 'person gender', genrel.name as 'relationship to letter', count (*) as "number"
 from researchdata_letterperson lp
