@@ -259,7 +259,7 @@ where lp.person_other_gender_id is not null
 group by slletterpersonemotion_id, genothergen.id;
 
 Emotion by decade:
-select slletterpersonemotion.name, count (*), SUBSTRING(l.sent_date_year, 0, 4) as "decades"
+select slletterpersonemotion.name, SUBSTRING(l.sent_date_year, 0, 4) || "0s" as "decades", count (*)
 from researchdata_letterperson lp
 LEFT JOIN researchdata_letterperson_emotion letterperson_emotion ON lp.id = letterperson_emotion.letterperson_id
 LEFT JOIN researchdata_slgeneric slletterpersonemotion ON letterperson_emotion.slletterpersonemotion_id = slletterpersonemotion.id
