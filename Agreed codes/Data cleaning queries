@@ -2,6 +2,8 @@
 3 = Sarah
 4 = Emily
 
+[we can also limit our searches with 'where created_by_id = 2']
+
 --To find letters with no date and record creator:
 
 select id, title, sent_date_year, created_by_id
@@ -9,18 +11,25 @@ from researchdata_letter l
 where sent_date_year is NULL
 order by created_by_id
 
--- To find persons with no relationship to letter and record creator:
-
-SELECT id, person_id, person_form_of_address, person_other, person_letter_relationship_id, created_by_id 
-from researchdata_letterperson lp 
-where person_letter_relationship_id is NULL
-order by created_by_id
-
 -- To find persons with no gender and record creator:
 
 select id, first_name, last_name, gender_id, created_by_id 
 from researchdata_person p
 where gender_id is NULL 
+order by created_by_id
+
+-- To find persons other with no gender and record creator:
+
+select lp.id, lp.person_other, lp.person_other_gender_id, created_by_id 
+from researchdata_letterperson lp
+where lp.person_other_gender_id is NULL and lp.person_id is null
+order by created_by_id
+
+-- To find persons with no relationship to letter and record creator:
+
+SELECT id, person_id, person_form_of_address, person_other, person_letter_relationship_id, created_by_id 
+from researchdata_letterperson lp 
+where person_letter_relationship_id is NULL
 order by created_by_id
 
 -- To find missing sent from locations:
