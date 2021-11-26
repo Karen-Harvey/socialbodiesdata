@@ -259,12 +259,21 @@ where lp.person_other_gender_id is not null
 group by slletterpersonemotion_id, genothergen.id;
 
 Emotion by decade:
-select slletterpersonemotion.name, SUBSTRING(l.sent_date_year, 0, 4) || "0s" as "decades", count (*)
+select genem.name, SUBSTRING(l.sent_date_year, 0, 4) || "0s" as "decades", count (*)
 from researchdata_letterperson lp
-LEFT JOIN researchdata_letterperson_emotion letterperson_emotion ON lp.id = letterperson_emotion.letterperson_id
-LEFT JOIN researchdata_slgeneric slletterpersonemotion ON letterperson_emotion.slletterpersonemotion_id = slletterpersonemotion.id
+LEFT JOIN researchdata_letterperson_emotion lpem ON lp.id = lpem.letterperson_id
+LEFT JOIN researchdata_slgeneric genem ON lpem.slletterpersonemotion_id = genem.id
 LEFT JOIN researchdata_letter l ON lp.letter_id = l.id 
-where slletterpersonemotion.name = 'worried'
+where genem.name = 'spirit (immaterial)'
+group by "decades"
+
+Body part by decade:
+select genbp.name, SUBSTRING(l.sent_date_year, 0, 4) || "0s" as "decades", count (*)
+from researchdata_letterperson lp
+LEFT JOIN researchdata_letterperson_body_part lpbp on lp.id = lpbp.letterperson_id 
+left join researchdata_slgeneric genbp on lpbp.slletterpersonbodypart_id = genbp.id
+LEFT JOIN researchdata_letter l on lp.letter_id = l.id
+where genbp.name is 'spirits (body part)'
 group by "decades"
 
 Count and group by, using 'having' to limit on the aggregate:
