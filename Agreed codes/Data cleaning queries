@@ -57,3 +57,11 @@ select id, title, sent_to_location , created_by_id
 from researchdata_letter l
 where sent_to_location not like "England"
 -- can repeat with "Wales", "scotland", "ireland"
+
+-- To identify other persons who could be 'upgraded' to persons:
+
+select lp.id, lp.person_other, lp.person_other_gender_id, created_by_id 
+from researchdata_letterperson lp
+where lp.person_id is null
+order by created_by_id
+-- sort column created_by_id to check your own id, then scan manually for repetitions
