@@ -64,4 +64,4 @@ select lp.id, lp.person_other, lp.person_other_gender_id, created_by_id
 from researchdata_letterperson lp
 where lp.person_id is null
 order by created_by_id
--- sort column created_by_id to check your own id, then scan manually for repetitions
+-- sort column created_by_id to check your own id, then scan manually for repetitions [create 'person' record if several] and check names against the people to ensure no 'other persons' have 'person' records
