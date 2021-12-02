@@ -24,7 +24,7 @@ select
 
 select
 (
-	select count(distinct(*))
+	select count(distinct(person_other))
 	from researchdata_letterperson lp
 	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
 	where person_other_gender_id is not null and genothergen.name = 'male'
@@ -40,7 +40,7 @@ select
 )
 as 'count_total_males',
 (
-	select count(distinct(*))
+	select count(distinct(person_other))
 	from researchdata_letterperson lp
 	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
 	where person_other_gender_id is not null and genothergen.name = 'female'
@@ -56,14 +56,13 @@ as 'count_total_males',
 )
 as 'count_total_females',
 (
-	select count(distinct(*))
+	select count(distinct(person_other))
 	from researchdata_letterperson lp
 	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
 	where person_other_gender_id is not null and genothergen.name = 'both'
 	group by person_other_gender_id
 )
 as 'count_total_both'
-
 
 
 
