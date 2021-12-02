@@ -80,3 +80,31 @@ left join researchdata_slgeneric genothergen on lp.person_other_gender_id = geno
 where lp.person_id is null
 group by person_other_gender_id;
 
+
+
+-- QQ - can we build percentages into the SQL queries??
+--[all letterpersons with person records and an assigned gender count]
+select genem.name as 'emotion', 
+	   gengen.name as "gender",
+	   count(*) as count, 
+	   (
+		    select count (*)
+			from researchdata_letterperson_emotion lpem2
+			LEFT JOIN researchdata_letterperson lp2 ON lpem2.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ) as total_gender,
+	   round(((count(*) * 1.0)/(
+		    select count (*)
+			from researchdata_letterperson_emotion lpem2
+			LEFT JOIN researchdata_letterperson lp2 ON lpem2.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ))*100, 2) || '%' as '% count of total_gender'
+from researchdata_letterperson_emotion lpem
+LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where lp.person_other_gender_id is null and p.gender_id is not null
+group by slletterpersonemotion_id, p.gender_id;
