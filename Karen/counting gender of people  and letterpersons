@@ -1,0 +1,87 @@
+To count people (persons + other persons) by gender and removing distinct individuals:
+
+select
+(
+	select count(distinct(person_other))
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'male'
+	group by person_other_gender_id
+) +
+(
+	select count(distinct(p.id))
+	from researchdata_letterperson lp
+	left join researchdata_person p on lp.person_id = p.id
+	left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+	where p.gender_id is not null and gengen.name = 'male'
+	group by p.gender_id
+)
+as 'count_total_males',
+(
+	select count(distinct(person_other))
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'female'
+	group by person_other_gender_id
+) +
+(
+	select count(distinct(p.id))
+	from researchdata_letterperson lp
+	left join researchdata_person p on lp.person_id = p.id
+	left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+	where p.gender_id is not null and gengen.name = 'female'
+	group by p.gender_id
+)
+as 'count_total_females',
+(
+	select count(distinct(person_other))
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'both'
+	group by person_other_gender_id
+)
+as 'count_total_both';
+
+-- To count all letterpersons by gender (without removing duplicates):
+
+select
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'male'
+	group by person_other_gender_id
+) +
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_person p on lp.person_id = p.id
+	left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+	where p.gender_id is not null and gengen.name = 'male'
+	group by p.gender_id
+)
+as 'count_total_males',
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'female'
+	group by person_other_gender_id
+) +
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_person p on lp.person_id = p.id
+	left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+	where p.gender_id is not null and gengen.name = 'female'
+	group by p.gender_id
+)
+as 'count_total_females',
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'both'
+	group by person_other_gender_id
+)
+as 'count_total_both';
