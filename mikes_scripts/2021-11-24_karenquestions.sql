@@ -31,7 +31,7 @@ select
 	group by person_other_gender_id
 ) +
 (
-	select count(*)
+	select count(distinct(lp.person_id))
 	from researchdata_letterperson lp
 	left join researchdata_person p on lp.person_id = p.id
 	left join researchdata_slgeneric gengen on p.gender_id = gengen.id
@@ -47,7 +47,7 @@ as 'count_total_males',
 	group by person_other_gender_id
 ) +
 (
-	select count(*)
+	select count(distinct(lp.person_id))
 	from researchdata_letterperson lp
 	left join researchdata_person p on lp.person_id = p.id
 	left join researchdata_slgeneric gengen on p.gender_id = gengen.id
