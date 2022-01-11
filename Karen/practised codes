@@ -35,6 +35,15 @@ from researchdata_letterperson lp
 --where lp.person_id is not null
 
 Count and group by gender:
+
+How many letter writers are male and female?
+select gengen.name as 'person gender', count (distinct(p.id))
+from researchdata_person p
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+left join researchdata_letterperson lp on p.id = lp.person_id 
+where lp.person_letter_relationship_id = 278
+group by gender_id;
+
 How many of our persons are male and female?
 [Persons]
 select gengen.name as 'person gender', count (*)
@@ -114,6 +123,15 @@ LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
 left join researchdata_slgeneric gengen on p.gender_id = gengen.id
 --where p.gender_id is not null
 group by genrel.id, p.gender_id;
+
+How do the letter writers break down by religion?
+select genrel.name as 'person religion', count (distinct(p.id))
+from researchdata_person p
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+left join researchdata_letterperson lp on p.id = lp.person_id 
+where lp.person_letter_relationship_id = 278
+group by genrel.id;
 
 What are the relationships to letters of the letterpersons?
 Count letterperson by relationship to letter:
