@@ -157,6 +157,25 @@ left join researchdata_slgeneric genpgen on p.gender_id = genpgen.id
 where p.gender_id is not null
 group by genrel.id, p.gender_id
 
+--To get all relationship to letter by gender we need to combine the following:
+select genlpothergen.name as 'other person gender', genrel.name as 'relationship to letter', count (*) as "number"
+from researchdata_letterperson lp
+left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
+left join researchdata_slgeneric genlpothergen on lp.person_other_gender_id = genlpothergen.id
+where lp.person_other_gender_id is 376 or 377 and lp.person_other_gender_id is not null
+group by genrel.id, genlpothergen.id;
+
+AND
+
+select genpgen.name as 'person gender', genrel.name as 'relationship to letter', count (*) as "number"
+from researchdata_letterperson lp
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
+left join researchdata_slgeneric genpgen on p.gender_id = genpgen.id
+--where p.gender_id is 1 or 2
+where p.gender_id is not null
+group by genrel.id, p.gender_id;
+
 Count and group named categories:
 [body part]
 select genbp.name as 'body part name', count (*)
