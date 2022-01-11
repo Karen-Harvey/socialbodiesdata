@@ -286,6 +286,58 @@ LEFT JOIN researchdata_letter l ON lp.letter_id = l.id
 where genem.name = 'spirit (immaterial)'
 group by "decades"
 
+Body parts as % for each gender body part:
+select genbp.name as 'body part', 
+	   gengen.name as "gender",
+	   count(*) as count, 
+	   (
+		    select count (*)
+			from researchdata_letterperson_body_part lpbp
+			LEFT JOIN researchdata_letterperson lp2 ON lpbp.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ) as total_gender,
+	   round(((count(*) * 1.0)/(
+		    select count (*)
+			from researchdata_letterperson_body_part lpbp
+			LEFT JOIN researchdata_letterperson lp2 ON lpbp.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ))*100, 2) || '%' as '% count of total_gender'
+from researchdata_letterperson_body_part lpbp
+LEFT JOIN researchdata_letterperson lp ON lpbp.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genbp on lpbp.slletterpersonbodypart_id = genbp.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where lp.person_other_gender_id is null and p.gender_id is not null
+group by slletterpersonbodypart_id, p.gender_id;
+
+Bodily activity by % of bodily activity for each gender:
+select genba.name as 'body activity', 
+	   gengen.name as "gender",
+	   count(*) as count, 
+	   (
+		    select count (*)
+			from researchdata_letterperson_bodily_activity lpba
+			LEFT JOIN researchdata_letterperson lp2 ON lpba.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ) as total_gender,
+	   round(((count(*) * 1.0)/(
+		    select count (*)
+			from researchdata_letterperson_bodily_activity lpba
+			LEFT JOIN researchdata_letterperson lp2 ON lpba.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ))*100, 2) || '%' as '% count of total_gender'
+from researchdata_letterperson_bodily_activity lpba
+LEFT JOIN researchdata_letterperson lp ON lpba.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genba on lpba.slletterpersonbodilyactivity_id = genba.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where lp.person_other_gender_id is null and p.gender_id is not null
+group by slletterpersonbodilyactivity_id, p.gender_id;
+
 Body part by decade:
 select genbp.name, SUBSTRING(l.sent_date_year, 0, 4) || "0s" as "decades", count (*)
 from researchdata_letterperson lp
