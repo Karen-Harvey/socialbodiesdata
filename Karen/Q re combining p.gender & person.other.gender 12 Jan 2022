@@ -1,0 +1,97 @@
+--Q1. who are men and women writing about (themselves, their addressee or others)? So far I have two queries for person and other.person but how do we combine them? I would also love to get %s.
+
+--Persons:
+select genpgen.name as 'person gender', genrel.name as 'relationship to letter', count (*) as "number"
+from researchdata_letterperson lp
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
+left join researchdata_slgeneric genpgen on p.gender_id = genpgen.id
+--where p.gender_id is 1 or 2
+where p.gender_id is not null
+group by genrel.id, p.gender_id;
+
+--Other persons:
+select genlpothergen.name as 'other person gender', genrel.name as 'relationship to letter', count (*) as "number"
+from researchdata_letterperson lp
+left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
+left join researchdata_slgeneric genlpothergen on lp.person_other_gender_id = genlpothergen.id
+where lp.person_other_gender_id is 376 or 377 and lp.person_other_gender_id is not null
+group by genrel.id, genlpothergen.id;
+
+--Q2. how do various topics differ for all LPs of different genders? 
+
+-- you wrote a query for emotions, though this is just for persons (not other.persons). This was:
+select genem.name as 'emotion', 
+	   gengen.name as "gender",
+	   count(*) as count, 
+	   (
+		    select count (*)
+			from researchdata_letterperson_emotion lpem2
+			LEFT JOIN researchdata_letterperson lp2 ON lpem2.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ) as total_gender,
+	   round(((count(*) * 1.0)/(
+		    select count (*)
+			from researchdata_letterperson_emotion lpem2
+			LEFT JOIN researchdata_letterperson lp2 ON lpem2.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ))*100, 2) || '%' as '% count of total_gender'
+from researchdata_letterperson_emotion lpem
+LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where lp.person_other_gender_id is null and p.gender_id is not null
+group by slletterpersonemotion_id, p.gender_id;
+
+--I used this to develop two queries for person and other.person but how do I combine them? eg. for treatment:
+-- Persons:
+select gent.name as 'treatment', 
+	   gengen.name as "gender",
+	   count(*) as count, 
+	   (
+		    select count (*)
+			from researchdata_letterperson_treatment lpt
+			LEFT JOIN researchdata_letterperson lp2 ON lpt.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ) as total_gender,
+	   round(((count(*) * 1.0)/(
+		    select count (*)
+			from researchdata_letterperson_treatment lpt
+			LEFT JOIN researchdata_letterperson lp2 ON lpt.letterperson_id = lp2.id
+			LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id
+			where p.gender_id = p2.gender_id
+	   ))*100, 2) || '%' as '% count of total_gender'
+from researchdata_letterperson_treatment lpt
+LEFT JOIN researchdata_letterperson lp ON lpt.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric gent on lpt.slletterpersontreatment_id = gent.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where lp.person_other_gender_id is null and p.gender_id is not null
+group by slletterpersontreatment_id, p.gender_id;
+
+-- Other.persons:
+select gent.name as 'treatment', 
+	   genothergen.name as "gender",
+	   count(*) as count, 
+	   (
+		    select count (*)
+			from researchdata_letterperson_treatment lpt
+			LEFT JOIN researchdata_letterperson lp2 ON lpt.letterperson_id = lp2.id
+	   ) as total_gender,
+	   round(((count(*) * 1.0)/(
+		    select count (*)
+			from researchdata_letterperson_treatment lpt
+			LEFT JOIN researchdata_letterperson lp2 ON lpt.letterperson_id = lp2.id
+	   ))*100, 2) || '%' as '% count of total_gender'
+from researchdata_letterperson_treatment lpt
+LEFT JOIN researchdata_letterperson lp ON lpt.letterperson_id = lp.id
+left join researchdata_slgeneric gent on lpt.slletterpersontreatment_id = gent.id
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+where lp.person_other_gender_id is not null
+group by slletterpersontreatment_id, lp.person_other_gender_id;
+
+
