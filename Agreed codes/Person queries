@@ -1,9 +1,7 @@
 Person by religion:
 
-select genrel.name as 'person religion', count (distinct(p.id)) 
-from researchdata_person p 
-LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id 
-LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id 
-left join researchdata_letterperson lp on p.id = lp.person_id  
-where lp.person_letter_relationship_id = 278 
-group by genrel.id; 
+select genrel.name as 'person religion', count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+group by genrel.id;
