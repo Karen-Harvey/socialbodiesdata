@@ -1,0 +1,80 @@
+select 
+(select count (*) from researchdata_letter where sent_from_location like '%bedforshire%') as 'bedforshire',
+(select count (*) from researchdata_letter where sent_from_location like '%berkshire%') as 'berkshire',
+(select count (*) from researchdata_letter where sent_from_location like '%buckinghamshire%') as 'buckinghamshire',
+(select count (*) from researchdata_letter where sent_from_location like '%cambridgeshire%') as 'cambridgeshire',
+(select count (*) from researchdata_letter where sent_from_location like '%cheshire%') as 'cheshire',
+(select count (*) from researchdata_letter where sent_from_location like '%cornwall%') as 'cornwall',
+(select count (*) from researchdata_letter where sent_from_location like '%cumberland%') as 'cumberland',
+(select count (*) from researchdata_letter where sent_from_location like '%derbyshire%') as 'debyshire',
+(select count (*) from researchdata_letter where sent_from_location like '%devon%') as 'devon',
+(select count (*) from researchdata_letter where sent_from_location like '%dorset%') as 'dorset',
+(select count (*) from researchdata_letter where sent_from_location like '%durham%') as 'durham',
+(select count (*) from researchdata_letter where sent_from_location like '%essex%') as 'essex',
+(select count (*) from researchdata_letter where sent_from_location like '%gloucestershire%') as 'gloucestershire',
+(select count (*) from researchdata_letter where sent_from_location like '%hampshire%') as 'hampshire',
+(select count (*) from researchdata_letter where sent_from_location like '%herefordshire%') as 'herefordshire',
+(select count (*) from researchdata_letter where sent_from_location like '%hertfordshire%') as 'hertfordshire',
+(select count (*) from researchdata_letter where sent_from_location like '%huntingdonshire%') as 'huntingdonshire',
+(select count (*) from researchdata_letter where sent_from_location like '%kent%') as 'kent',
+(select count (*) from researchdata_letter where sent_from_location like '%lancashire%') as 'lancashire',
+(select count (*) from researchdata_letter where sent_from_location like '%leicestershire%') as 'leicestershire',
+(select count (*) from researchdata_letter where sent_from_location like '%lincolnshire%') as 'lincolnshire',
+(select count (*) from researchdata_letter where sent_from_location like '%london%') as 'london',
+(select count (*) from researchdata_letter where sent_from_location like '%middlesex%') as 'middlesex',
+(select count (*) from researchdata_letter where sent_from_location like '%norfolk%') as 'norfolk',
+(select count (*) from researchdata_letter where sent_from_location like '%northamptonshire%') as 'northamptonshire',
+(select count (*) from researchdata_letter where sent_from_location like '%northumberland%') as 'northumberland',
+(select count (*) from researchdata_letter where sent_from_location like '%nottinghamshire%') as 'nottinghamshire',
+(select count (*) from researchdata_letter where sent_from_location like '%oxfordshire%') as 'oxfordshire',
+(select count (*) from researchdata_letter where sent_from_location like '%rutland%') as 'rutland',
+(select count (*) from researchdata_letter where sent_from_location like '%shropshire%') as 'shropshire',
+(select count (*) from researchdata_letter where sent_from_location like '%somerset%') as 'somerset',
+(select count (*) from researchdata_letter where sent_from_location like '%staffordshire%') as 'staffordshire',
+(select count (*) from researchdata_letter where sent_from_location like '%suffolk%') as 'suffolk',
+(select count (*) from researchdata_letter where sent_from_location like '%surrey%') as 'surrey',
+(select count (*) from researchdata_letter where sent_from_location like '%sussex%') as 'sussex',
+(select count (*) from researchdata_letter where sent_from_location like '%warwickshire%') as 'warwickshire',
+(select count (*) from researchdata_letter where sent_from_location like '%westmorland%') as 'westmorland',
+(select count (*) from researchdata_letter where sent_from_location like '%wiltshire%') as 'wiltshire',
+(select count (*) from researchdata_letter where sent_from_location like '%worcestershire%') as 'worcestershire',
+(select count (*) from researchdata_letter where sent_from_location like '%yorkshire%') as 'yorkshire',
+(select count (*) from researchdata_letter where sent_from_location not LIKE '%bedfordshire%' 
+and sent_from_location not LIKE '%berkshire%' 
+and sent_from_location not LIKE '%buckinghamshire%' 
+and sent_from_location not LIKE '%cambridgeshire%' 
+and sent_from_location not LIKE '%cheshire%'
+and sent_from_location not LIKE '%cornwall%'
+and sent_from_location not LIKE '%cumberland%'
+and sent_from_location not LIKE '%derbyshire%'
+and sent_from_location not LIKE '%devon%'
+and sent_from_location not LIKE '%dorset%'
+and sent_from_location not LIKE '%durham%'
+and sent_from_location not LIKE '%essex%'
+and sent_from_location not LIKE '%gloucestershire%'
+and sent_from_location not LIKE '%hampshire%'
+and sent_from_location not LIKE '%hertfordshire%'
+and sent_from_location not LIKE '%huntingdonshire%'
+and sent_from_location not LIKE '%kent%'
+and sent_from_location not LIKE '%lancashire%'
+and sent_from_location not LIKE '%leicestershire%'
+and sent_from_location not LIKE '%lincolnshire%'
+and sent_from_location not LIKE '%london%'
+and sent_from_location not LIKE '%middlesex%'
+and sent_from_location not LIKE '%norfolk%'
+and sent_from_location not LIKE '%northamptonshire%'
+and sent_from_location not LIKE '%northumberland%'
+and sent_from_location not LIKE '%nottinghamshire%'
+and sent_from_location not LIKE '%oxfordshire%'
+and sent_from_location not LIKE '%rutland%'
+and sent_from_location not LIKE '%shropshire%'
+and sent_from_location not LIKE '%somerset%'
+and sent_from_location not LIKE '%staffordshire%'
+and sent_from_location not LIKE '%suffolk%'
+and sent_from_location not LIKE '%surrey%'
+and sent_from_location not LIKE '%sussex%'
+and sent_from_location not LIKE '%warwickshire%'
+and sent_from_location not LIKE '%westmorland%'
+and sent_from_location not LIKE '%wiltshire%'
+and sent_from_location not LIKE '%worcestershire%'
+and sent_from_location not LIKE '%yorkshire%') as 'other';
