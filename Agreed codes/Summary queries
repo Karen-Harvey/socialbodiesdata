@@ -5,24 +5,6 @@ from researchdata_letter rl
 --where sent_date_year < 1700 OR sent_date_year >1800
 group by decades 
 
--- Letters sent from location by country:
-
-select 
-(select count (*) from researchdata_letter where sent_from_location like '%england%') as 'england',
-(select count (*) from researchdata_letter where sent_from_location like '%scotland%') as 'scotland',
-(select count (*) from researchdata_letter where sent_from_location like '%wales%') as 'wales',
-(select count (*) from researchdata_letter where sent_from_location like '%ireland%') as 'ireland';
-
---And including non-GB locations:
-select 
-(select count (*) from researchdata_letter where sent_from_location like '%england%') as 'england',
-(select count (*) from researchdata_letter where sent_from_location like '%scotland%') as 'scotland',
-(select count (*) from researchdata_letter where sent_from_location like '%wales%') as 'wales',
-(select count (*) from researchdata_letter where sent_from_location like '%ireland%') as 'ireland',
-(select count (*) from researchdata_letter where sent_from_location not LIKE '%england%' 
-and sent_from_location not like '%scotland%' 
-and sent_from_location not like '%wales%' 
-and sent_from_location not like '%ireland%') as 'other';
 
 -- Proportion of letter content on body:
 select genlprop.name as 'proportion of letter', count (*)
