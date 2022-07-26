@@ -5,3 +5,26 @@ from researchdata_person p
 LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
 LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
 group by genrel.id;
+
+Person by rank:
+
+select genrank.name as 'person rank', count (*)
+from researchdata_person p
+LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
+LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
+group by genrank.id;
+  select gengen.name as 'person gender', count (distinct(p.id))
+from researchdata_person p
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+left join researchdata_letterperson lp on p.id = lp.person_id 
+where lp.person_letter_relationship_id = 278
+group by gender_id;
+
+Person by gender:
+
+select gengen.name as 'person gender', count (distinct(p.id))
+from researchdata_person p
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+left join researchdata_letterperson lp on p.id = lp.person_id 
+where lp.person_letter_relationship_id = 278
+group by gender_id;
