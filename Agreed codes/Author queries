@@ -1,0 +1,8 @@
+Authors by gender:
+
+select gengen.name as 'person gender', count (distinct(p.id))
+from researchdata_person p
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+left join researchdata_letterperson lp on p.id = lp.person_id 
+where lp.person_letter_relationship_id = 278
+group by gender_id;
