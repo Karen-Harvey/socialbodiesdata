@@ -1,0 +1,6 @@
+-- To see letters by decade:
+
+select SUBSTRING(sent_date_year, 0, 4) || "0s" as "decades", COUNT(*) as "number of letters" 
+from researchdata_letter rl 
+--where sent_date_year < 1700 OR sent_date_year >1800
+group by decades 
