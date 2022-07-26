@@ -1,3 +1,10 @@
+Person by gender:
+
+select gengen.name as 'person gender', count (distinct(p.id))
+from researchdata_person p
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+group by gender_id;
+
 Person by religion:
 
 select genrel.name as 'person religion', count (*)
