@@ -1,7 +1,0 @@
-select 
-(select count (*) from researchdata_letter where sent_from_location like '%england%') as 'england',
-(select count (*) from researchdata_letter where sent_from_location like '%scotland%') as 'scotland',
-(select count (*) from researchdata_letter where sent_from_location like '%wales%') as 'wales',
-(select count (*) from researchdata_letter where sent_from_location like '%ireland%') as 'ireland';
-
-
