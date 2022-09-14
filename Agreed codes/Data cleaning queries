@@ -55,6 +55,12 @@ from researchdata_letter l
 
 -- To find sent from locations not containing country:
 
+Will probably need '%' signs, e.g.
+
+select id, title, sent_to_location , created_by_id 
+from researchdata_letter l
+where sent_to_location not like "%England%"; 
+
 select id, title, sent_from_location, created_by_id 
 from researchdata_letter l
 where sent_from_location not like "England"
