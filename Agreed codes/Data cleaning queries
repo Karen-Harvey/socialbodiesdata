@@ -20,7 +20,16 @@ order by created_by_id
 
 -- To find persons other with no gender and record creator:
 
+(Counts only)
+
 select count(*)
+from researchdata_letterperson lp
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+where person_other_gender_id is null and person_other is not null; 
+
+(Lists the records)
+
+select lp.id, lp.person_other, lp.person_other_gender_id, created_by_id 
 from researchdata_letterperson lp
 left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
 where person_other_gender_id is null and person_other is not null; 
