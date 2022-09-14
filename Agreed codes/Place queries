@@ -18,7 +18,7 @@ and sent_from_location not like '%scotland%'
 and sent_from_location not like '%wales%' 
 and sent_from_location not like '%ireland%') as 'other';
 
--- County count:
+-- County count: [English counties]
 
 select 
 (select count (*) from researchdata_letter where sent_from_location like '%bedforshire%') as 'bedforshire',
