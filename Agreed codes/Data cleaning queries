@@ -87,3 +87,10 @@ from researchdata_person p
 left join researchdata_person_marital_status pmstat on p.id = pmstat.person_id 
 left join researchdata_slgeneric gen on pmstat.slpersonmaritalstatus_id = gen.id 
 where gen.name is NULL and created_by_id = '3'
+
+-- To identify persons where religion is NULL
+select p.id, first_name, last_name, created_by_id 
+from researchdata_person p
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+where genrel.id is NULL and created_by_id = '2';
