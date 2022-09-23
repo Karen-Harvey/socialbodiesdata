@@ -1,0 +1,78 @@
+Letterpersons by gender:
+
+select
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'male'
+	group by person_other_gender_id
+) +
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_person p on lp.person_id = p.id
+	left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+	where p.gender_id is not null and gengen.name = 'male'
+	group by p.gender_id
+)
+as 'count_total_males',
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'female'
+	group by person_other_gender_id
+) +
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_person p on lp.person_id = p.id
+	left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+	where p.gender_id is not null and gengen.name = 'female'
+	group by p.gender_id
+)
+as 'count_total_females',
+(
+	select count(*)
+	from researchdata_letterperson lp
+	left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+	where person_other_gender_id is not null and genothergen.name = 'both'
+	group by person_other_gender_id
+)
+as 'count_total_both';
+
+--LP without gender:
+
+select count(*)
+from researchdata_letterperson lp
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+where person_other_gender_id is null and person_other is not null; 
+
+LP and relationship to letter:
+
+select genrel.name as 'relationship to letter', count (*)
+from researchdata_letterperson lp
+left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
+group by genrel.id;
+
+LP, gender and relationship to letter:
+
+select genpgen.name as 'person gender', genrel.name as 'relationship to letter', count (*) as "number"
+from researchdata_letterperson lp
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
+left join researchdata_slgeneric genpgen on p.gender_id = genpgen.id
+--where p.gender_id is 1 or 2
+where p.gender_id is not null
+group by genrel.id, p.gender_id;
+
+LP_other, gender and relationship to letter:
+
+select genlpothergen.name as 'other person gender', genrel.name as 'relationship to letter', count (*) as "number"
+from researchdata_letterperson lp
+left join researchdata_slgeneric genrel on lp.person_letter_relationship_id = genrel.id
+left join researchdata_slgeneric genlpothergen on lp.person_other_gender_id = genlpothergen.id
+where lp.person_other_gender_id is 376 or 377 and lp.person_other_gender_id is not null
+group by genrel.id, genlpothergen.id;
+

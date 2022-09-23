@@ -20,12 +20,21 @@ order by created_by_id
 
 -- To find persons other with no gender and record creator:
 
+(Counts only)
+
+select count(*)
+from researchdata_letterperson lp
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+where person_other_gender_id is null and person_other is not null; 
+
+(Lists the records)
+
 select lp.id, lp.person_other, lp.person_other_gender_id, created_by_id 
 from researchdata_letterperson lp
-where lp.person_other_gender_id is NULL and lp.person_id is null
-order by created_by_id
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+where person_other_gender_id is null and person_other is not null; 
 
--- To find persons with no relationship to letter and record creator:
+-- To find letter persons with no relationship to letter and record creator:
 
 SELECT id, person_id, person_form_of_address, person_other, person_letter_relationship_id, created_by_id 
 from researchdata_letterperson lp 
@@ -46,6 +55,12 @@ from researchdata_letter l
 
 -- To find sent from locations not containing country:
 
+Will probably need '%' signs, e.g.
+
+select id, title, sent_to_location , created_by_id 
+from researchdata_letter l
+where sent_to_location not like "%England%"; 
+
 select id, title, sent_from_location, created_by_id 
 from researchdata_letter l
 where sent_from_location not like "England"
@@ -65,3 +80,17 @@ from researchdata_letterperson lp
 where lp.person_id is null
 order by created_by_id
 -- sort column created_by_id to check your own id, then scan manually for repetitions [create 'person' record if several] and check names against the people to ensure no 'other persons' have 'person' records
+
+--To identify persons where marital status is NULL
+select p.id, gen.name, p.first_name, p.last_name, created_by_id 
+from researchdata_person p 
+left join researchdata_person_marital_status pmstat on p.id = pmstat.person_id 
+left join researchdata_slgeneric gen on pmstat.slpersonmaritalstatus_id = gen.id 
+where gen.name is NULL and created_by_id = '3'
+
+-- To identify persons where religion is NULL
+select p.id, first_name, last_name, created_by_id 
+from researchdata_person p
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+where genrel.id is NULL and created_by_id = '2';
