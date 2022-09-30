@@ -1,5 +1,6 @@
 Authors by gender:
 
+Person authors by gender:
 select gengen.name as 'person gender', count (distinct(p.id))
 from researchdata_person p
 left join researchdata_slgeneric gengen on p.gender_id = gengen.id
@@ -7,8 +8,8 @@ left join researchdata_letterperson lp on p.id = lp.person_id
 where lp.person_letter_relationship_id = 278
 group by gender_id;
 
-Number of letters by gender of author (where person):
-select gengen.name as 'gender of author (persons)', count (*) as 'number of letters'
+Number of letterpersons when primary author by gender of author (where person):
+select gengen.name as 'gender of author (persons)', count (*) as 'number of letterpersons'
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
 left join researchdata_person p on lp.person_id = p.id 
@@ -17,8 +18,8 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 group by gengen.id;
 
-Number of letters by gender of author (where person_other):
-select genothergen.name as 'gender of author (personsother)', count (*) as 'number of letters'
+Number of letterpersons by gender of author (where person_other):
+select genothergen.name as 'gender of author (personsother)', count (*) as 'number of letterpersons'
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id  
 left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
