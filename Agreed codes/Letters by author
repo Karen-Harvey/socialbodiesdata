@@ -1,4 +1,4 @@
--- To count number of letters by gender of person:
+-- To count number of letters by gender of person author:
 select gengen.name as 'gender of author (persons)', count (*) as 'number of letters'
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
@@ -8,7 +8,7 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 group by gengen.id;
 
---To count number of letters by gender of personother:
+--To count number of letters by gender of personother author:
 select genothergen.name as 'gender of author (personsother)', count (*) as 'number of letters'
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id  
