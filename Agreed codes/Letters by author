@@ -16,3 +16,16 @@ left join researchdata_slgeneric genothergen on lp.person_other_gender_id = geno
 where lp.person_other_gender_id is not null
 and lp.person_letter_relationship_id is 278
 group by genothergen.id;
+
+--To count number of letters by rank of person author:
+select genrank.name as 'rank of author (persons)', count (*) as 'number of letters'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id
+left join researchdata_person_rank pr on p.id = pr.person_id
+left join researchdata_slgeneric genrank on pr.slpersonrank_id = genrank.id 
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+group by genrank.id; 
+
+
