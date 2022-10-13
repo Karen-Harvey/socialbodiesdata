@@ -4,3 +4,14 @@ select SUBSTRING(sent_date_year, 0, 4) || "0s" as "decades", COUNT(*) as "number
 from researchdata_letter rl 
 --where sent_date_year < 1700 OR sent_date_year >1800
 group by decades 
+
+--To count treatments by decade:
+
+select genlpt.name as "treatment", count (*), SUBSTRING(l.sent_date_year, 0, 4) as "decades"
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_treatment lpt on lp.id = lpt.letterperson_id 
+left join researchdata_slgeneric genlpt on lpt.slletterpersontreatment_id = genlpt.id 
+--where genlpt.name = "doctor"
+where genlpt.name is not NULL
+group by "treatment", "decades";
