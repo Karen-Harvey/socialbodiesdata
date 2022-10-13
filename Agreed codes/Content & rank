@@ -9,3 +9,16 @@ LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
 LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
 where lp.person_other_gender_id is null and p.gender_id is not null and prank.person_id is not null
 group by slletterpersonemotion_id, p.gender_id, genrank.id;
+
+
+-- To count all letterperson as persons by emotion, gender and rank:
+select genrank.name as 'person rank', gengen.name as "gender", genem.name as 'emotion', count (*)
+from researchdata_letterperson_emotion lpem
+LEFT JOIN researchdata_letterperson lp ON lpem.letterperson_id = lp.id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genem on lpem.slletterpersonemotion_id = genem.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
+LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
+where lp.person_other_gender_id is null and p.gender_id is not null and prank.person_id is not null
+group by slletterpersonemotion_id, p.gender_id, genrank.id;
