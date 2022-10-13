@@ -22,3 +22,15 @@ LEFT JOIN researchdata_person_rank prank ON p.id = prank.person_id
 LEFT JOIN researchdata_slgeneric genrank ON prank.slpersonrank_id = genrank.id
 where lp.person_other_gender_id is null and p.gender_id is not null and prank.person_id is not null
 group by slletterpersonemotion_id, p.gender_id, genrank.id;
+
+-- To find letters with word/phrase by rank:
+select genrank.name as 'rank of author (persons)', count (*) as 'number of letters'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id
+left join researchdata_person_rank pr on p.id = pr.person_id
+left join researchdata_slgeneric genrank on pr.slpersonrank_id = genrank.id 
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+and l.transcription_normalized LIKE '%duty%' 
+group by genrank.id;
