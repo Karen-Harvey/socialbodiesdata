@@ -28,4 +28,12 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 group by genrank.id; 
 
-
+-- To count number of letters by person author religion:
+select genrel.name as 'person author religion', count (*)
+from researchdata_person p
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+left join researchdata_letterperson lp on p.id = lp.person_id 
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+where lp.person_letter_relationship_id = 278
+group by genrel.id;
