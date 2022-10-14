@@ -1,0 +1,26 @@
+
+-- To count letter with religious commentary by denomination of author:
+
+select count (*), genrel.name as 'person religion', gencom.name as 'commentary'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id
+left join researchdata_person p on lp.person_id = p.id
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+left join researchdata_letter_commentary lcom ON l.id = lcom.letter_id
+left join researchdata_slgeneric gencom on lcom.sllettercommentary_id = gencom.id
+where lp.person_letter_relationship_id = 278
+and gencom.name = 'religious'
+group by genrel.name
+
+-- To count instances of devotional practice as bodily activity by religion of person:
+select count (*), genrel.name as 'person religion', genba.name as 'bodily activity'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id 
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+left join researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id 
+left join researchdata_slgeneric genba on lpba.slletterpersonbodilyactivity_id = genba.id 
+where genba.name = "devotional practice"
+group by genrel.id
