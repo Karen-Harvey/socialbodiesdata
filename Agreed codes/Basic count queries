@@ -1,0 +1,7 @@
+--Numbers of letters
+select count(*)
+from researchdata_letter l;
+
+-- Numbers of lps:
+select count(*)
+from researchdata_letterperson lp;
