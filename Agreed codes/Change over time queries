@@ -1,3 +1,9 @@
+-- to find keywords sorted by date
+select id, title, sent_date_year, transcription_plain 
+from researchdata_letter l
+where transcription_normalized LIKE '%ugly%' 
+order by sent_date_year asc; 
+
 --To count treatments by decade:
 
 select genlpt.name as "treatment", count (*), SUBSTRING(l.sent_date_year, 0, 4) as "decades"
