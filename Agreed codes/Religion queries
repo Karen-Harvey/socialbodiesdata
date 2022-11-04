@@ -13,6 +13,13 @@ where lp.person_letter_relationship_id = 278
 and gencom.name = 'religious'
 group by genrel.name
 
+-- To count instances of devotional practice as bodily activity:
+select count (*)
+from researchdata_letterperson lp 
+left join researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id 
+left join researchdata_slgeneric genba on lpba.slletterpersonbodilyactivity_id = genba.id 
+where genba.name = "devotional practice";
+
 -- To count instances of devotional practice as bodily activity by religion of person:
 select count (*), genrel.name as 'person religion', genba.name as 'bodily activity'
 from researchdata_letter l
