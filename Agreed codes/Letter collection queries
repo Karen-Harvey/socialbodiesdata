@@ -1,0 +1,5 @@
+--To find letters all from a particular collection in a particular repository:
+select id, item_number, title, sent_date_year, repository_id  
+from researchdata_letter l
+where collection_id is '420'
+order by sent_date_year asc;
