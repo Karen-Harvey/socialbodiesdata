@@ -37,3 +37,28 @@ LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
 LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
 where lp.person_letter_relationship_id = 278
 group by genrel.id;
+
+-- To count letters by person rank and %:
+
+select genrank.name as 'rank of author (persons)',
+        count (*) as 'number of letters',
+        100 * (cast(count(*) as real) / (
+            select count(*)
+            from researchdata_letter l2
+                  left join researchdata_letterperson lp2 on l2.id = lp2.letter_id 
+                  left join researchdata_person p2 on lp2.person_id = p2.id
+                  left join researchdata_person_rank pr2 on p2.id = pr2.person_id
+                  left join researchdata_slgeneric genrank2 on pr2.slpersonrank_id = genrank2.id 
+                  where lp2.person_letter_relationship_id = 278
+                  and lp2.person_id is not null
+                  and genrank2.id is not null
+        )) as 'percentage'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id
+left join researchdata_person_rank pr on p.id = pr.person_id
+left join researchdata_slgeneric genrank on pr.slpersonrank_id = genrank.id 
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+and genrank.id is not null
+group by genrank.id;
