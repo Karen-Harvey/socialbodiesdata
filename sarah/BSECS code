@@ -1,0 +1,11 @@
+LPs that mention 'old age' and 'travel' [searches also run for 'old age' and 'visiting', 'ageing' and 'travel', 'ageing' and 'visiting'
+
+select distinct l.id, rs.name 'lifestage', rs2.name 'activity'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id
+left join researchdata_letterperson_bodily_activity activity on lp.letter_id = activity.letterperson_id
+left join researchdata_slgeneric rs2 on activity.letterperson_id
+where rs.name = 'old age' and rs2.name = 'travel';
+
