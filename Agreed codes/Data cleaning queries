@@ -4,6 +4,11 @@
 
 [we can also limit our searches with 'where created_by_id = 2']
 
+-- To count letters by creator:
+select count(*)
+from researchdata_letter l
+where l.created_by_id is 2
+
 --To find letters with no date and record creator:
 
 select id, title, sent_date_year, created_by_id
