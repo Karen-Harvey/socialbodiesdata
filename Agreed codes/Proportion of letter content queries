@@ -17,7 +17,7 @@ where lp.person_letter_relationship_id is 278
 group by genlprop.id;
 
 
--- Proportion of letter content on body by gender of author:
+-- Proportion of letter content on body by gender of author as person:
 -- [men] select genlprop.name as 'proportion of letter', count (*)
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
