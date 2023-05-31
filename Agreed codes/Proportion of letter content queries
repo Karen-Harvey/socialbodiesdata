@@ -33,3 +33,26 @@ left join researchdata_slgeneric genlprop on l.estimated_proportion_of_letter_id
 left join researchdata_person p on lp.person_id = p.id 
 where lp.person_letter_relationship_id is 278 and p.gender_id is 2
 group by genlprop.id;
+
+-- Proportion of letter content on body by gender of LP authors (not persons):
+-- [men]
+select genlprop.name as 'proportion of letter', count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_slgeneric genlprop on l.estimated_proportion_of_letter_id = genlprop.id 
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+where lp.person_other_gender_id is not null 
+and lp.person_letter_relationship_id is 278
+and genothergen.name = 'male'
+group by genlprop.id;
+
+--[women]
+select genlprop.name as 'proportion of letter', count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_slgeneric genlprop on l.estimated_proportion_of_letter_id = genlprop.id 
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id
+where lp.person_other_gender_id is not null 
+and lp.person_letter_relationship_id is 278
+and genothergen.name = 'female'
+group by genlprop.id;
