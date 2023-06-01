@@ -98,6 +98,27 @@ left join researchdata_slgeneric genothergen on lp.person_other_gender_id = geno
 where lp.person_other_gender_id is not null 
 group by slletterpersontreatment_id, lp.person_other_gender_id; 
 
+-- To count TREATMENT by gender, and as proportion of total gender for LP OTHER PERSONS (removing 'both' as gender):
+select gent.name as 'treatment',  
+   genothergen.name as "gender", 
+   count(*) as count,  
+   ( 
+    select count (*) 
+from researchdata_letterperson_treatment lpt 
+LEFT JOIN researchdata_letterperson lp2 ON lpt.letterperson_id = lp2.id 
+   ) as total_gender, 
+   round(((count(*) * 1.0)/( 
+    select count (*) 
+from researchdata_letterperson_treatment lpt 
+LEFT JOIN researchdata_letterperson lp2 ON lpt.letterperson_id = lp2.id 
+   ))*100, 2) || '%' as '% count of total_gender' 
+from researchdata_letterperson_treatment lpt 
+LEFT JOIN researchdata_letterperson lp ON lpt.letterperson_id = lp.id 
+left join researchdata_slgeneric gent on lpt.slletterpersontreatment_id = gent.id 
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
+where lp.person_other_gender_id is not null 
+and lp.person_other_gender_id is not 378
+group by slletterpersontreatment_id, lp.person_other_gender_id;
 
 
 
