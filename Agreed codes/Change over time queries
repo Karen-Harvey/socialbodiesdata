@@ -13,3 +13,11 @@ left join researchdata_letterperson_treatment lpt on lp.id = lpt.letterperson_id
 left join researchdata_slgeneric genlpt on lpt.slletterpersontreatment_id = genlpt.id 
 where genlpt.name is not NULL
 group by "treatment", "decades";
+
+-- To count lps by decade:
+
+select count (*), SUBSTRING(l.sent_date_year, 0, 4) as "decade"
+from researchdata_letterperson lp
+left join researchdata_letter l on lp.letter_id = l.id 
+where l.sent_date_year is not null
+group by "decade";
