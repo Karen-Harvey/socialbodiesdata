@@ -15,3 +15,10 @@ left join researchdata_slgeneric genlpt on lpt.slletterpersontreatment_id = genl
 --where genlpt.name = "doctor"
 where genlpt.name is not NULL
 group by "treatment", "decades";
+
+-- To find letters sent in a single year:
+
+select lp.id, l.sent_date_year  
+from researchdata_letterperson lp
+left join researchdata_letter l on lp.letter_id = l.id 
+where l.sent_date_year = "1679"
