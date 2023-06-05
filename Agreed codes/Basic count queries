@@ -5,3 +5,7 @@ from researchdata_letter l;
 -- Numbers of lps:
 select count(*)
 from researchdata_letterperson lp;
+
+-- Number of collections:
+select count (*) 
+from researchdata_sllettercollection lc
