@@ -3,3 +3,7 @@ select id, item_number, title, sent_date_year, repository_id
 from researchdata_letter l
 where collection_id is '420'
 order by sent_date_year asc;
+
+-- Number of collections:
+select count (*) 
+from researchdata_sllettercollection lc
