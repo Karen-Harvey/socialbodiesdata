@@ -218,7 +218,55 @@ where lp.person_other_gender_id is not null
 and lp.person_other_gender_id is not 378
 group by slletterpersonconditionspecificstate_id, lp.person_other_gender_id;
 
--- To find a bodily activity and the women persons associated with that (eg. work):
+-- To count condition generalized state by gender, and as proportion of total gender for LP PERSONS OTHER (removing 'both' as gender): 
+select gengs.name as 'general state',  
+   genothergen.name as "gender", 
+   count(*) as count,  
+   ( 
+    select count (*) 
+from researchdata_letterperson_condition_generalized_state lpss 
+LEFT JOIN researchdata_letterperson lp2 ON lpgs.letterperson_id = lp2.id 
+   ) as total_gender, 
+   round(((count(*) * 1.0)/( 
+    select count (*) 
+from researchdata_letterperson_condition_generalized_state lpgs  
+LEFT JOIN researchdata_letterperson lp2 ON lpgs.letterperson_id = lp2.id 
+   ))*100, 2) || '%' as '% count of total_gender' 
+from researchdata_letterperson_condition_generalized_state lpgs 
+LEFT JOIN researchdata_letterperson lp ON lpgs.letterperson_id = lp.id 
+left join researchdata_slgeneric gengs on lpgs.slletterpersonconditiongeneralizedstate_id = gengs.id 
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
+where lp.person_other_gender_id is not null 
+and lp.person_other_gender_id is not 378
+group by slletterpersonconditiongeneralizedstate_id, lp.person_other_gender_id;
+
+-- To count condition generalized state by gender, and as a proportion of total gender for LP PERSONS:
+select gengs.name as 'general state',  
+   gengen.name as "gender", 
+   count(*) as count,  
+   ( 
+    select count (*) 
+from researchdata_letterperson_condition_generalized_state lpss 
+LEFT JOIN researchdata_letterperson lp2 ON lpss.letterperson_id = lp2.id
+LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id 
+where p.gender_id = p2.gender_id
+   ) as total_gender, 
+   round(((count(*) * 1.0)/( 
+    select count (*) 
+from researchdata_letterperson_condition_generalized_state lpgs  
+LEFT JOIN researchdata_letterperson lp2 ON lpgs.letterperson_id = lp2.id 
+LEFT JOIN researchdata_person p2 ON lp2.person_id = p2.id 
+where p.gender_id = p2.gender_id 
+   ))*100, 2) || '%' as '% count of total_gender'  
+from researchdata_letterperson_condition_generalized_state lpgs 
+LEFT JOIN researchdata_letterperson lp ON lpgs.letterperson_id = lp.id 
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric gengs on lpgs.slletterpersonconditiongeneralizedstate_id = gengs.id 
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id 
+where lp.person_other_gender_id is null and p.gender_id is not null 
+group by slletterpersonconditiongeneralizedstate_id, p.gender_id;
+
+-- To find a bodily activity and the women PERSONS associated with that (eg. work):
 select lp.id as 'lp id', p.id as 'person id', p.first_name as 'first name', p.last_name as 'last name'
 from researchdata_letterperson lp
 LEFT JOIN researchdata_person p ON lp.person_id = p.id 
@@ -227,5 +275,16 @@ left join researchdata_slgeneric genba on lpba.slletterpersonbodilyactivity_id =
 left join researchdata_slgeneric gengen on p.gender_id = gengen.id 
 where lp.person_other_gender_id is null and p.gender_id is not null 
 and gengen.id is 2
+and genba.id is 91;
+
+-- To find a bodily activity and the women PERSONS OTHER associated with that (eg. work):
+select lp.id as 'lp id', lp.person_other as 'name' 
+from researchdata_letterperson lp
+LEFT JOIN researchdata_person p ON lp.person_id = p.id 
+left join researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id
+left join researchdata_slgeneric genba on lpba.slletterpersonbodilyactivity_id = genba.id 
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
+where lp.person_other_gender_id is not null 
+and lp.person_other_gender_id is 377
 and genba.id is 91;
 
