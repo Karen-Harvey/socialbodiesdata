@@ -18,6 +18,6 @@ from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
 left join researchdata_person p on p.id = lp.person_id 
 left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
-left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id 
-where rs.name = 'old age' and l.collection_id is 411;
---where rs.name = 'ageing' and l.collection_id is 411; 
+left join researchdata_slgeneric ls on lifestage.slletterpersonconditionspecificlifestage_id = ls.id 
+where ls.name = 'old age' and l.collection_id is 411;
+--where ls.name = 'ageing' and l.collection_id is 411; 
