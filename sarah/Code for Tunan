@@ -1,0 +1,11 @@
+To identify the Persons and Letter Persons in a collection [411 is Woollocombe] with dates of birth and with gender [377 is female, 376 is male]
+
+select p.first_name, p.last_name, lp.person_other, p.year_of_birth 
+--select *
+from researchdata_letter l 
+left join researchdata_letterperson lp ON l.id = lp.letter_id 
+left join researchdata_person p on p.id = lp.person_id 
+where l.collection_id is 411
+--and p.year_of_birth is NOT NULL
+--and lp.person_other_gender_id is 377
+
