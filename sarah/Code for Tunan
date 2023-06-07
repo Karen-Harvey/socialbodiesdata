@@ -9,3 +9,15 @@ left join researchdata_person p on p.id = lp.person_id
 where l.collection_id is 411
 --and p.year_of_birth is NOT NULL
 --and lp.person_other_gender_id is 377
+
+
+To find LetterPersons tagged as 'old age' or 'ageing' within a particular collection (411 is the Woollocombe)
+
+select *
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on p.id = lp.person_id 
+left join researchdata_letterperson_condition_specific_life_stage lifestage on lp.letter_id = lifestage.letterperson_id 
+left join researchdata_slgeneric rs on lifestage.slletterpersonconditionspecificlifestage_id = rs.id 
+where rs.name = 'old age' and l.collection_id is 411;
+--where rs.name = 'ageing' and l.collection_id is 411; 
