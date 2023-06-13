@@ -21,3 +21,13 @@ left join researchdata_letterperson_condition_specific_life_stage lifestage on l
 left join researchdata_slgeneric ls on lifestage.slletterpersonconditionspecificlifestage_id = ls.id 
 where ls.name = 'old age' and l.collection_id is 411;
 --where ls.name = 'ageing' and l.collection_id is 411; 
+
+Where we are looking to create csv files of particular authors (that we know are old) and send the normalised transcription to Tunan
+
+select rp.first_name, rp.last_name, rl.sent_date_year, rl.transcription_normalized 
+from researchdata_letter rl 
+left join researchdata_letterperson lp on rl.id = lp.letter_id 
+left join researchdata_person rp on rp.id = lp.person_id
+where rl.sent_date_year BETWEEN 1809 and 1820
+and rp.first_name is 'John' and rp.last_name is 'Glover';
+
