@@ -1,7 +1,15 @@
+-- To conduct a basic word search:
 select id, title, sent_date_year, transcription_plain 
 from researchdata_letter l
 where transcription_normalized LIKE '%ugly%' 
 order by sent_date_year asc 
+
+-- To find two or more words in one letter:
+select id, title, sent_date_year, transcription_plain 
+from researchdata_letter l
+where transcription_normalized LIKE '%soul%' 
+and transcription_normalized LIKE '%spirit%'
+order by sent_date_year asc;
 
 -- To find letters with word/phrase by rank:
 select genrank.name as 'rank of author (persons)', count (*) as 'number of letters'
