@@ -31,3 +31,39 @@ left join researchdata_person rp on rp.id = lp.person_id
 where rl.sent_date_year BETWEEN 1809 and 1820
 and rp.first_name is 'John' and rp.last_name is 'Glover';
 
+And isolating these by persons that were primary authors
+select rp.first_name, rp.last_name, rl.sent_date_year, rl.transcription_normalized 
+--select *
+from researchdata_letter rl 
+left join researchdata_letterperson lp on rl.id = lp.letter_id 
+left join researchdata_person rp on rp.id = lp.person_id
+where rl.sent_date_year BETWEEN 1743 and 1820
+and rp.first_name is 'Elizabeth' and rp.last_name is 'Elstob'
+and person_letter_relationship_id is '278';
+
+Where we are looking for a list of letter writers and their age at writing using the year_active_start date in the database
+
+select distinct p.id, first_name, last_name, year_of_birth, year_active_start, (year_of_birth - year_active_start) as 'age at writing'
+from researchdata_person p
+left join researchdata_letterperson lp on p.id = lp.person_id 
+where lp.person_letter_relationship_id is 278
+and p.year_of_birth is not not null and year_active_start is not null
+order by "age at writing" desc;
+
+
+Where we are looking for a list of letter writers and their age at writing using the date of the letter, and year_of_birth
+select distinct rl.id, rp.first_name, rp.last_name, rl.sent_date_year, rp.year_of_birth, (sent_date_year - year_of_birth) as 'age at writing'
+from researchdata_letter rl 
+left join researchdata_letterperson lp on rl.id = lp.letter_id 
+left join researchdata_person rp on rp.id = lp.person_id
+where rp.year_of_birth is NOT NULL
+order by "age at writing" desc;
+
+As above, but making sure that they are letter writers rather than subjects
+select distinct rl.id, rp.first_name, rp.last_name, rl.sent_date_year, rp.year_of_birth, (sent_date_year - year_of_birth) as 'age at writing'
+from researchdata_letter rl 
+left join researchdata_letterperson lp on rl.id = lp.letter_id 
+left join researchdata_person rp on rp.id = lp.person_id
+where rp.year_of_birth is NOT NULL and person_letter_relationship_id is '278'
+order by "age at writing" desc;
+
