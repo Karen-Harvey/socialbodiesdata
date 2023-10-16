@@ -109,6 +109,14 @@ left join researchdata_person rp on lp.person_id = rp.id
 where rp.first_name is "John" and rp.last_name is "Allen"
 order by l.sent_date_year ASC;
 
+--To find a particular person's active dates by Person ID (useful where we have two Persons with the same name): [SF]
+select distinct rp.first_name, rp.last_name, l.sent_date_year 
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person rp on lp.person_id = rp.id
+where rp.id is "681"
+order by l.sent_date_year ASC;
+
 --To find a list of persons for each letter collection:[SF]
 select distinct rp.id, rp.first_name, rp.last_name, rs.name 
 from researchdata_letter l 
