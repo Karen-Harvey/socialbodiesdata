@@ -41,6 +41,16 @@ where lp.person_letter_relationship_id is 278
 and p.year_of_birth is not not null and p.year_of_death is not null
 order by "age at death" desc;
 
+--Counting difference between 'age at death' and 'year last active' [SF]
+--wasn't able to write the sum that would calculate age at last letter accurately - error column left in for reference [SF]
+select distinct p.id, first_name, last_name, year_of_birth, year_of_death, year_active_end, (year_of_death - year_of_birth) as "age at death", 
+(year_of_death - year_active_end) as "difference", ("age at death" - "difference") as "age last letter"
+from researchdata_person p
+left join researchdata_letterperson lp on p.id = lp.person_id 
+where lp.person_letter_relationship_id is 278
+and p.year_of_birth is not not null and p.year_of_death is not null
+order by "age at death" desc;
+
 To find duplicate persons of the same name:
 
 select first_name, last_name, count(*)
