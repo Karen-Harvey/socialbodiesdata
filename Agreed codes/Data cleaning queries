@@ -9,6 +9,13 @@ select count(*)
 from researchdata_letter l
 where l.created_by_id is 2
 
+-- To find numbers of person gender by creator:
+select gengen.name as 'person gender', count (distinct(p.id))
+from researchdata_person p
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where p.created_by_id is 3
+group by gender_id;
+
 --To find letters with no date and record creator:
 
 select id, title, sent_date_year, created_by_id
