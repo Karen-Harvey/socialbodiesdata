@@ -1,4 +1,4 @@
---To find distinct letterpersons by gender:
+--To find distinct letterpersons and persons by gender:
 select 
 ( 
 select count(distinct(person_other)) 
