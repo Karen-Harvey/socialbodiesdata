@@ -75,3 +75,14 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 and genty.name = 'advising'
 group by gengen.id;
+
+-- To count letter types by gender:
+select gengen.name as 'gender of author (person)', genty.name as 'letter type', count (*)
+from researchdata_letter_letter_type lty
+LEFT JOIN researchdata_letter l on l.id = lty.letter_id
+left join researchdata_letterperson lp ON lp.letter_id = lty.letter_id
+LEFT JOIN researchdata_person p ON lp.person_id = p.id
+left join researchdata_slgeneric genty on lty.sllettertype_id = genty.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where lp.person_other_gender_id is null and p.gender_id is not null and lp.person_letter_relationship_id = 278
+group by sllettertype_id, p.gender_id;
