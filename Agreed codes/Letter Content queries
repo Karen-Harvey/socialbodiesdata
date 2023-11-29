@@ -36,3 +36,10 @@ from researchdata_letter l
 left join researchdata_letter_letter_type lty ON l.id = lty.letter_id
 left join researchdata_slgeneric genty on lty.sllettertype_id = genty.id
 where genty.name = 'advising';
+
+-- To count letters by type:
+select genty.name as 'letter type', count (*)
+from researchdata_letter l
+left join researchdata_letter_letter_type lty ON l.id = lty.letter_id
+left join researchdata_slgeneric genty on lty.sllettertype_id = genty.id
+group by genty.name;
