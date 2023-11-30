@@ -11,7 +11,7 @@ where transcription_normalized LIKE '%soul%'
 and transcription_normalized LIKE '%spirit%'
 order by sent_date_year asc;
 
--- To find letters with word/phrase by rank:
+-- To find letters with word/phrase by rank of author:
 select genrank.name as 'rank of author (persons)', count (*) as 'number of letters'
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
@@ -22,6 +22,27 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 and l.transcription_normalized LIKE '%duty%' 
 group by genrank.id;
+
+-- To find letters with word/phrase by gender of author:
+select gengen.name as 'gender of author (persons)', count (*) as 'number of letters'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id 
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+and l.transcription_normalized LIKE '%scrawl%' 
+group by gengen.id;
+
+-- To collate letters with word/phrase by gender of author:
+select gengen.name as 'gender of author (persons)', l.id, l.title, transcription_plain
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id 
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+and l.transcription_normalized LIKE '%scribble%'
 
 --To find number of letters by commentary type:
 select count (*)
