@@ -9,3 +9,7 @@ from researchdata_letterperson lp;
 -- Number of collections:
 select count (*) 
 from researchdata_sllettercollection lc
+
+-- Number of repositories:
+select count (*) 
+from researchdata_slletterrepository rs 
