@@ -8,9 +8,9 @@ order by sent_date_year asc;
 select count (*) 
 from researchdata_sllettercollection lc
 
--- To find persons and lps connected to a particular collection, and their birth dates:
+-- To find letters by persons and lps connected to a particular collection, and their birth dates:
 select p.first_name, p.last_name, lp.person_other, p.year_of_birth 
---select *
+select *
 from researchdata_letter l 
 left join researchdata_letterperson lp ON l.id = lp.letter_id 
 left join researchdata_person p on p.id = lp.person_id 
@@ -18,7 +18,7 @@ where l.collection_id is 411
 --and p.year_of_birth is NOT NULL
 --and lp.person_other_gender_id is 377
 
--- To find letters that discuss a particualr life stage in a collection:
+-- To find letters that discuss a particular life stage in a collection:
 select *
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
