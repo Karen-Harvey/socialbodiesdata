@@ -30,7 +30,7 @@ from researchdata_letterperson lp
 where lp.person_id is NULL 
 and lp.person_letter_relationship_id is 278
 
-Number of [distinct] letterpersons when primary author by gender of author (where person):
+Number of [distinct] letterpersons when lp is primary author by gender of author (where person):
 select gengen.name as 'gender of author (persons)', count (*) as 'number of letterpersons'
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
@@ -40,7 +40,7 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 group by gengen.id;
 
-Number of [distinct] letterpersons by gender of author (where person_other):
+Number of [distinct] letterpersons when lp is primary author by gender of author (where person_other):
 select genothergen.name as 'gender of author (personsother)', count (*) as 'number of letterpersons'
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id  
