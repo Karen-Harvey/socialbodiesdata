@@ -49,7 +49,7 @@ where lp.person_other_gender_id is not null
 and lp.person_letter_relationship_id is 278
 group by genothergen.id;
 
--- To find gender of person author discussing a specific bodily state:
+-- To find gender of person author discussing a specific bodily state [where person is author]
 select genss.name as 'specific state',  
    gengen.name as "gender", 
    count(*) as count,  
