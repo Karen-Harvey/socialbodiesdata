@@ -86,3 +86,24 @@ left join researchdata_slgeneric genty on lty.sllettertype_id = genty.id
 left join researchdata_slgeneric gengen on p.gender_id = gengen.id
 where lp.person_other_gender_id is null and p.gender_id is not null and lp.person_letter_relationship_id = 278
 group by sllettertype_id, p.gender_id;
+
+-- To count number of letters by gender of person author:
+select gengen.name as 'gender of author (persons)', count (*) as 'number of letter persons'
+from researchdata_letterperson lp1
+left join researchdata_letterperson lp2 on lp1.letter_id = lp2.letter_id
+left join researchdata_person p on lp2.person_id = p.id
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id
+where lp2.person_letter_relationship_id = 278
+and lp2.person_id is not null
+group by gengen.id;
+
+--To count number of letters by gender of personother author:
+select genothergen.name as 'gender of author (personsother)', count (*) as 'number of letterpersons'
+from researchdata_letterperson lp1
+left join researchdata_letterperson lp2 on lp1.letter_id = lp2.letter_id
+left join researchdata_slgeneric genothergen on lp2.person_other_gender_id = genothergen.id
+where lp2.person_other_gender_id is not null
+and lp2.person_letter_relationship_id is 278
+group by genothergen.id;
+
+
