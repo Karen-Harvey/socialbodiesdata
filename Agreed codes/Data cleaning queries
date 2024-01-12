@@ -16,6 +16,11 @@ left join researchdata_slgeneric gengen on p.gender_id = gengen.id
 where p.created_by_id is 3
 group by gender_id;
 
+-- To find lps by creator:
+select count(*)
+from researchdata_letterperson lp
+where lp.created_by_id is 3
+
 --To find letters with no date and record creator:
 
 select id, title, sent_date_year, created_by_id
