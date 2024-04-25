@@ -10,7 +10,7 @@ group by gender_id;
 
 PLUS
 
-Count authors by gender who are persons (remove duplicates):
+Count authors by gender who are not persons (remove duplicates):
 select lp.person_other_gender_id as 'gender', count (distinct(lp.person_other)) 
 from researchdata_letterperson lp 
 where lp.person_id is NULL  
