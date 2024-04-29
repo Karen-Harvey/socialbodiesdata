@@ -44,6 +44,18 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 and l.transcription_normalized LIKE '%scribble%'
 
+-- To count letters with word/phrase by religion of author:
+select genrel.name as 'religion of author (persons)', count (*) as 'number of letters'
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id
+LEFT JOIN researchdata_person_religion prel ON p.id = prel.person_id
+LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+and l.transcription_normalized LIKE '%my suffering%' 
+group by genrel.id;
+
 --To find number of letters by commentary type:
 select count (*)
 from researchdata_letter l
