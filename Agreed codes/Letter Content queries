@@ -56,6 +56,13 @@ and lp.person_id is not null
 and l.transcription_normalized LIKE '%my suffering%' 
 group by genrel.id;
 
+-- To count letters with word/phrase by collection:
+select gencol.name as 'collection', count (*) as 'number of letters'
+from researchdata_letter l
+LEFT JOIN researchdata_slgeneric gencol ON l.collection_id = gencol.id
+where l.transcription_normalized LIKE '%out of order%' 
+group by gencol.id;
+
 --To find number of letters by commentary type:
 select count (*)
 from researchdata_letter l
