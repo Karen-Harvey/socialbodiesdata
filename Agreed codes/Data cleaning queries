@@ -1,6 +1,7 @@
 2 = Karen
 3 = Sarah
 4 = Emily
+7 = Helen
 
 [we can also limit our searches with 'where created_by_id = 2']
 
