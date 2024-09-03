@@ -18,6 +18,14 @@ and sent_from_location not like '%scotland%'
 and sent_from_location not like '%wales%' 
 and sent_from_location not like '%ireland%') as 'other';
 
+-- To find locations outside GB:
+SELECT sent_from_location 
+FROM researchdata_letter l
+where sent_from_location not like '%scotland%' 
+and sent_from_location not like '%wales%' 
+and sent_from_location not like '%ireland%'
+AND sent_from_location NOT LIKE '%england%'
+
 -- County count: [English counties]
 
 select 
