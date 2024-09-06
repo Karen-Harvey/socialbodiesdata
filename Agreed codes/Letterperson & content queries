@@ -1,3 +1,14 @@
+-- To find distinct letters where life-stage is 'childhood'
+SELECT DISTINCT l.id, title, transcription_plain 
+FROM researchdata_letter l
+LEFT JOIN researchdata_letterperson lp ON l.id = lp.letter_id 
+LEFT JOIN researchdata_letterperson_condition_specific_life_stage lpls ON lp.id = lpls.letterperson_id
+LEFT JOIN researchdata_slgeneric genls ON lpls.slletterpersonconditionspecificlifestage_id = genls.id
+--left join researchdata_slgeneric genpgen on p.gender_id = genpgen.id
+--left join researchdata_slgeneric genlpgen on lp.person_other_gender_id = genlpgen.id
+WHERE genls.name = "childhood"
+order by sent_date_year asc
+
 -- To count ACTIVITY by gender, and as proportion of total gender for LP PERSONS:
 
 select genba.name as 'body activity',  
