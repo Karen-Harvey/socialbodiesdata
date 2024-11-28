@@ -1,3 +1,10 @@
+Authors who are persons:
+select count (distinct(p.id))
+from researchdata_person p
+left join researchdata_letterperson lp on p.id = lp.person_id 
+where lp.person_letter_relationship_id = 278
+
+
 Authors by gender:
 
 Person authors by gender:
