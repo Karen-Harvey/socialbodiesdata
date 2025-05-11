@@ -8,6 +8,10 @@ order by sent_date_year asc;
 select count (*) 
 from researchdata_sllettercollection lc
 
+-- Number of repositories:
+select count (*) 
+from researchdata_slletterrepository lr
+
 -- To find letters or persons and lps connected to a particular collection, and their birth dates:
 select DISTINCT p.id, p.first_name, p.last_name, lp.person_other, p.year_of_birth 
 --select *
