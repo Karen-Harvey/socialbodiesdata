@@ -11,6 +11,13 @@ where transcription_normalized LIKE '%soul%'
 and transcription_normalized LIKE '%spirit%'
 order by sent_date_year asc;
 
+-- To find the letters with certain words:
+SELECT l.transcription_plain, l.id, l.sent_date_year, l.title 
+FROM researchdata_letter l 
+WHERE l.transcription_normalized like "%trifl%" or l.transcription_normalized like "%scrol%" or l.transcription_normalized like "%scribble%" 
+or l.transcription_normalized like "%chat%" or l.transcription_normalized like "%nothing%" or l.transcription_normalized like "%scrawl%"
+order by sent_date_year asc
+
 -- To find letters with word/phrase by rank of author:
 select genrank.name as 'rank of author (persons)', count (*) as 'number of letters'
 from researchdata_letter l
