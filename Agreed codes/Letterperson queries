@@ -1,3 +1,11 @@
+-- To find lps with no gender:
+select lp.id, person_id, person_form_of_address, person_other, person_letter_relationship_id 
+from researchdata_letterperson lp 
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id 
+where p.gender_id is null
+and lp.person_other_gender_id is NULL
+
 --To find distinct letterpersons and persons by gender:
 select 
 ( 
