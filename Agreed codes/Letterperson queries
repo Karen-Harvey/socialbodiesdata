@@ -48,3 +48,31 @@ where person_other_gender_id is not null and genothergen.name = 'both'
 group by person_other_gender_id 
 ) 
 as 'count_total_both'; 
+
+-- male lp not persons (not unique)
+select count(*) 
+from researchdata_letterperson lp 
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
+where person_other_gender_id is not null and genothergen.name = 'male' 
+group by person_other_gender_id 
+
+-- male lp persons (not unique)
+select count(*) 
+from researchdata_letterperson lp 
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id 
+where p.gender_id is not null and gengen.name = 'male' 
+
+-- female lp not persons (not unique)
+select count(*) 
+from researchdata_letterperson lp 
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
+where person_other_gender_id is not null and genothergen.name = 'female' 
+
+-- female lp persons (not unique)
+select count(*) 
+from researchdata_letterperson lp 
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id 
+where p.gender_id is not null and gengen.name = 'female' 
+
