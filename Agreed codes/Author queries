@@ -24,20 +24,27 @@ where lp.person_id is NULL
 and lp.person_letter_relationship_id is 278 
 group by person_other_gender_id 
  
-Count by gender authors who are not persons:
+--Count by gender authors who are not persons:
 select lp.person_other_gender_id as 'gender', count (*)
 from researchdata_letterperson lp
 where lp.person_id is NULL 
 and lp.person_letter_relationship_id is 278
 group by person_other_gender_id 
 
-To find authors who are not persons:
+--To find authors who are not person and have no gender:
+select lp.id, lp.person_other, lp.person_other_gender_id
+from researchdata_letterperson lp
+where lp.person_id is NULL 
+and lp.person_other_gender_id is NULL
+and lp.person_letter_relationship_id is 278
+
+--To find authors who are not persons:
 select lp.id, lp.person_other, lp.person_other_gender_id
 from researchdata_letterperson lp
 where lp.person_id is NULL 
 and lp.person_letter_relationship_id is 278
 
-Number of [distinct] letterpersons when lp is primary author by gender of author (where person):
+--Number of [distinct] letterpersons when lp is primary author by gender of author (where person):
 select gengen.name as 'gender of author (persons)', count (*) as 'number of letterpersons'
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
