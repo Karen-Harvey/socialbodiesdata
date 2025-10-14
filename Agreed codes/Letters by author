@@ -48,7 +48,7 @@ LEFT JOIN researchdata_slgeneric genrel ON prel.slpersonreligion_id = genrel.id
 where lp.person_letter_relationship_id = 278
 group by genrel.id;
 
--- To count letters by person rank and %:
+-- To count letters by person rank and describe in %:
 
 select genrank.name as 'rank of author (persons)',
         count (*) as 'number of letters',
