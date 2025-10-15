@@ -17,6 +17,15 @@ left join researchdata_slgeneric genlpbp on lpbp.slletterpersonbodypart_id = gen
 where genlpbp.name = "nerves"
 group by "decades";
 
+-- To find emotion over time:
+select count (*), SUBSTRING(l.sent_date_year, 0, 4) || "0s" as "decades"
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_emotion lpe on lp.id = lpe.letterperson_id 
+left join researchdata_slgeneric genlpe on lpe.slletterpersonemotion_id = genlpe.id 
+where genlpe.name = "spirit (immaterial)"
+group by "decades";
+
 -- To find the letters in which faces are described, including the gender of the person and/or letterperson:
 
 select l.id, title, sent_date_year, transcription_plain, p.id as "person id", lp.id as "letter person id", genpgen.name as "person gender", genlpgen.name as "other person gender", genbp.name as "body part"
