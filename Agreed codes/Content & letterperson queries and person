@@ -8,6 +8,15 @@ left join researchdata_slgeneric genlpt on lpt.slletterpersontreatment_id = genl
 where genlpt.name = "doctor"
 group by "decades";
 
+--To find body parts over time
+select count (*), SUBSTRING(l.sent_date_year, 0, 4) || "0s" as "decades"
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_body_part lpbp on lp.id = lpbp.letterperson_id 
+left join researchdata_slgeneric genlpbp on lpbp.slletterpersonbodypart_id = genlpbp.id 
+where genlpbp.name = "nerves"
+group by "decades";
+
 -- To find the letters in which faces are described, including the gender of the person and/or letterperson:
 
 select l.id, title, sent_date_year, transcription_plain, p.id as "person id", lp.id as "letter person id", genpgen.name as "person gender", genlpgen.name as "other person gender", genbp.name as "body part"
