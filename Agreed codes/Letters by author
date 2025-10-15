@@ -27,6 +27,15 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 group by "decades", "gender of author (persons)"; 
 
+--To count number of letters by gender of personother by decade:
+select genothergen.name as 'gender of author (personsother)', count (*), SUBSTRING (sent_date_year, 0, 4) || "0s" as "decades" 
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id  
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
+where lp.person_other_gender_id is not null
+and lp.person_letter_relationship_id is 278
+group by "decades", genothergen.id;
+
 --To count number of letters by rank of person author:
 select genrank.name as 'rank of author (persons)', count (*) as 'number of letters'
 from researchdata_letter l
