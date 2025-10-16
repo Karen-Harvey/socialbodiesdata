@@ -96,7 +96,7 @@ and lp.person_letter_relationship_id is 278
 and l.transcription_normalized LIKE "%spirit%" 
 group by "decades", 'gender of author (personsother)'; 
 
--- To find gender of person author discussing a specific bodily state [where person is author]
+-- To count female person authors discussing a specific bodily state:
 select genss.name as 'specific state',  
    gengen.name as "gender", 
    count(*) as count,  
