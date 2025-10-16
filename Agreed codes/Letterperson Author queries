@@ -1,3 +1,17 @@
+-- To find bodypart 'spirits (body part)' in male authors:
+select gengen.name as 'gender of author (persons)', COUNT(*), SUBSTRING(sent_date_year, 0, 4) || "0s" as "decades" 
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id  
+left JOIN researchdata_letterperson_body_part lpbp on lp.id = lpbp.letterperson_id   
+LEFT JOIN researchdata_slgeneric genbp ON lpbp.slletterpersonbodypart_id = genbp.id
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+and p.gender_id is 1
+and genbp.name is 'spirits (body part)'
+group by "decades", "gender of author (persons)"; 
+
 -- To find BODY PART as discussed by gender of LPs when authors:
 select genbp.name as 'body part',  
    gengen.name as "gender", 
