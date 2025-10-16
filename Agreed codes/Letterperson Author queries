@@ -24,6 +24,32 @@ where lp.person_other_gender_id is not null
 and genbp.name is 'hands'
 group by "decades", 'gender of author (personsother)'; 
 
+-- To find emotion 'spirits (immaterial)' in male person authors:
+Select gengen.name as 'gender of author (persons)', COUNT(*), SUBSTRING(sent_date_year, 0, 4) || "0s" as "decades" 
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id  
+left JOIN researchdata_letterperson_emotion lpe  on lp.id = lpe.letterperson_id   
+LEFT JOIN researchdata_slgeneric gene ON lpe.slletterpersonemotion_id = gene.id
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+and p.gender_id is 1
+and gene.name is 'spirit (immaterial)'
+group by "decades", "gender of author (persons)"; 
+
+-- To find emotion 'spirits (immaterial)' in person other authors:
+select genothergen.name as 'gender of author (personsother)', COUNT(*), SUBSTRING(sent_date_year, 0, 4) || "0s" as "decades"
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id  
+left join researchdata_slgeneric genothergen on lp.person_other_gender_id = genothergen.id 
+left JOIN researchdata_letterperson_emotion lpe on lp.id = lpe.letterperson_id   
+LEFT JOIN researchdata_slgeneric gene ON lpe.slletterpersonemotion_id = gene.id
+and lp.person_letter_relationship_id is 278
+where lp.person_other_gender_id is not null
+and gene.name is 'spirit (immaterial)'
+group by "decades", 'gender of author (personsother)'; 
+
 -- To find BODY PART as discussed by gender of LPs when authors:
 select genbp.name as 'body part',  
    gengen.name as "gender", 
