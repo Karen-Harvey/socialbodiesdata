@@ -51,6 +51,17 @@ where lp.person_letter_relationship_id = 278
 and lp.person_id is not null
 and l.transcription_normalized LIKE '%scribble%'
 
+-- To count letters by gender of author (person) that contain a keyword:
+select gengen.name as 'gender of author (persons)', COUNT(*), SUBSTRING(sent_date_year, 0, 4) || "0s" as "decades" 
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id 
+left join researchdata_slgeneric gengen on p.gender_id = gengen.id 
+where lp.person_letter_relationship_id = 278
+and lp.person_id is not null
+and l.transcription_normalized LIKE "%spirit%" 
+group by "decades", "gender of author (persons)"; 
+
 -- To count letters with word/phrase by religion of author:
 select genrel.name as 'religion of author (persons)', count (*) as 'number of letters'
 from researchdata_letter l
