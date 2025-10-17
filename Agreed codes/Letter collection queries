@@ -12,6 +12,13 @@ from researchdata_sllettercollection lc
 select count (*) 
 from researchdata_slletterrepository lr
 
+-- To find letters in a single collection containing one word:
+SELECT l.transcription_plain, l.id, l.sent_date_year, l.title 
+FROM researchdata_letter l 
+WHERE l.transcription_normalized like "%spirit%"
+and collection_id is 301
+order by sent_date_year asc;
+
 -- To find letters or persons and lps connected to a particular collection, and their birth dates:
 select DISTINCT p.id, p.first_name, p.last_name, lp.person_other, p.year_of_birth 
 --select *
