@@ -1,3 +1,46 @@
+
+-- To find totals of LP fields:
+select genlpt.name as "treatment", count (*), SUBSTRING(l.sent_date_year, 0, 4) as "decades"
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_treatment lpt on lp.id = lpt.letterperson_id 
+left join researchdata_slgeneric genlpt on lpt.slletterpersontreatment_id = genlpt.id 
+where genlpt.name is not NULL
+group by "treatment", "decades";
+
+select genlpt.name as "treatment", count (*)
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_treatment lpt on lp.id = lpt.letterperson_id 
+left join researchdata_slgeneric genlpt on lpt.slletterpersontreatment_id = genlpt.id 
+where genlpt.name is not NULL
+group by "treatment";
+
+select genlpba.name as "bodily activity", count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id 
+left join researchdata_slgeneric genlpba on lpba.slletterpersonbodilyactivity_id = genlpba.id
+where genlpba.name is not null
+group by "bodily activity";
+
+select genlpss.name as "specific state", count (*)
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_state lpss on lp.id = lpss.letterperson_id 
+left join researchdata_slgeneric genlpss on lpss.slletterpersonconditionspecificstate_id = genlpss.id 
+where genlpss.name is not NULL
+group by "specific state";
+
+select genlpbp.name as "body part", count (*)
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_body_part lpbp on lp.id = lpbp.letterperson_id 
+left join researchdata_slgeneric genlpbp on lpbp.slletterpersonbodypart_id = genlpbp.id 
+where genlpbp.name is not NULL
+group by "body part";
+
+
 -- To find distinct letters where life-stage is 'childhood'
 SELECT DISTINCT l.id, title, transcription_plain 
 FROM researchdata_letter l
