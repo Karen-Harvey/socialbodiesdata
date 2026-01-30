@@ -40,6 +40,45 @@ left join researchdata_slgeneric genlpbp on lpbp.slletterpersonbodypart_id = gen
 where genlpbp.name is not NULL
 group by "body part";
 
+select genlpe.name as "emotion", count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_emotion lpe on lp.id = lpe.letterperson_id 
+left join researchdata_slgeneric genlpe on lpe.slletterpersonemotion_id = genlpe.id
+where genlpe.name is not null
+group by "emotion";
+
+select genlpi.name as "immaterial", count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_immaterial lpi on lp.id = lpi.letterperson_id 
+left join researchdata_slgeneric genlpi on lpi.slletterpersonimmaterial_id = genlpi.id
+where genlpi.name is not null
+group by "immaterial";
+
+select genlps.name as "sensation", count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_sensation lps on lp.id = lps.letterperson_id 
+left join researchdata_slgeneric genlps on lps.slletterpersonsensation_id = genlps.id
+where genlps.name is not null
+group by "sensation";
+
+select genlpc.name as "context", count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_context lpc on lp.id = lpc.letterperson_id 
+left join researchdata_slgeneric genlpc on lpc.slletterpersoncontext_id = genlpc.id
+where genlpc.name is not null
+group by "context";
+
+select genlps.name as "state", count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_state lps on lp.id = lps.letterperson_id 
+left join researchdata_slgeneric genlps on lps.slletterpersonstate_id = genlps.id
+where genlps.name is not null
+group by "state";
 
 -- To find distinct letters where life-stage is 'childhood'
 SELECT DISTINCT l.id, title, transcription_plain 
