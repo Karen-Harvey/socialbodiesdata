@@ -40,6 +40,14 @@ left join researchdata_slgeneric genlpbp on lpbp.slletterpersonbodypart_id = gen
 where genlpbp.name is not NULL
 group by "body part";
 
+select genlpa.name as "appearance", count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_appearance lpa on lp.id = lpa.letterperson_id 
+left join researchdata_slgeneric genlpa on lpa.slletterpersonappearance_id = genlpa.id
+where genlpa.name is not null
+group by "appearance";
+
 select genlpe.name as "emotion", count (*)
 from researchdata_letter l
 left join researchdata_letterperson lp on l.id = lp.letter_id 
