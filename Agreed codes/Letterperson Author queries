@@ -26,6 +26,33 @@ and p.gender_id is 2
 and genss.name is 'a cold'
 order by l.sent_date_year 
 
+-- To find women's 'a cold' discussed in letters by others:
+select l.id,title, l.transcription_plain 
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id 
+--left join researchdata_slgeneric gengen on p.gender_id = gengen.id  
+left JOIN researchdata_letterperson_condition_specific_state lpss on lp.id = lpss.letterperson_id   
+LEFT JOIN researchdata_slgeneric genss ON lpss.slletterpersonconditionspecificstate_id = genss.id 
+where lp.person_letter_relationship_id is not 278
+and lp.person_id is not null
+and p.gender_id is 2
+and genss.name is 'a cold'
+order by l.sent_date_year 
+
+-- To find men's 'a cold' discussed in letters by others:
+select l.id,title, l.transcription_plain 
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id 
+--left join researchdata_slgeneric gengen on p.gender_id = gengen.id  
+left JOIN researchdata_letterperson_condition_specific_state lpss on lp.id = lpss.letterperson_id   
+LEFT JOIN researchdata_slgeneric genss ON lpss.slletterpersonconditionspecificstate_id = genss.id 
+where lp.person_letter_relationship_id is not 278
+and lp.person_id is not null
+and p.gender_id is 1
+and genss.name is 'a cold'
+order by l.sent_date_year 
 
 -- To find bodypart 'spirits (body part)' in male person authors:
 select gengen.name as 'gender of author (persons)', COUNT(*), SUBSTRING(sent_date_year, 0, 4) || "0s" as "decades" 
