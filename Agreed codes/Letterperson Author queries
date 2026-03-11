@@ -1,3 +1,16 @@
+-- To find men's 'dancing' discussed in letters by themselves:
+select l.id,title, l.transcription_plain 
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_person p on lp.person_id = p.id 
+--left join researchdata_slgeneric gengen on p.gender_id = gengen.id  
+left JOIN researchdata_letterperson_bodily_activity lpba on lp.id = lpba.letterperson_id   
+LEFT JOIN researchdata_slgeneric genba ON lpba.slletterpersonbodilyactivity_id = genba.id 
+where lp.person_letter_relationship_id is 278
+and lp.person_id is not null
+and p.gender_id is 1
+and genba.name is 'dancing'
+
 -- To find 'a cold' discussed in male person authors about themselves:
 select l.id,title, l.transcription_plain 
 from researchdata_letter l 
