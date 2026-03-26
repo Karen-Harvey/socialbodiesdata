@@ -88,6 +88,15 @@ left join researchdata_slgeneric genlps on lps.slletterpersonstate_id = genlps.i
 where genlps.name is not null
 group by "state";
 
+select genlpls.name as "life stage", count (*)
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_specific_life_stage lpls on lp.id = lpls.letterperson_id 
+left join researchdata_slgeneric genlpls on lpls.slletterpersonconditionspecificlifestage_id = genlpls.id
+where genlpls.name is not null
+--and lp.person_letter_relationship_id is 278
+group by "life stage";
+
 select genlpgs.name as "generalized state", count (*)
 from researchdata_letter l 
 left join researchdata_letterperson lp on l.id = lp.letter_id 
