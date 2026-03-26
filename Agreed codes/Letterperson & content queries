@@ -88,6 +88,24 @@ left join researchdata_slgeneric genlps on lps.slletterpersonstate_id = genlps.i
 where genlps.name is not null
 group by "state";
 
+select genlpgs.name as "generalized state", count (*)
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_generalized_state lpgs on lp.id = lpgs.letterperson_id 
+left join researchdata_slgeneric genlpgs on lpgs.slletterpersonconditiongeneralizedstate_id = genlpgs.id 
+where genlpgs.name is not NULL
+group by "generalized state";
+
+-- To find generalized state totals for self LPs
+select genlpgs.name as "generalized state", count (*)
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_condition_generalized_state lpgs on lp.id = lpgs.letterperson_id 
+left join researchdata_slgeneric genlpgs on lpgs.slletterpersonconditiongeneralizedstate_id = genlpgs.id 
+where genlpgs.name is not NULL
+and lp.person_letter_relationship_id is 278
+group by "generalized state";
+
 -- To find distinct letters where life-stage is 'childhood'
 SELECT DISTINCT l.id, title, transcription_plain 
 FROM researchdata_letter l
