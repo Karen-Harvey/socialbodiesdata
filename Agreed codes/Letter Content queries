@@ -18,6 +18,15 @@ WHERE l.transcription_normalized like "%trifl%" or l.transcription_normalized li
 or l.transcription_normalized like "%chat%" or l.transcription_normalized like "%nothing%" or l.transcription_normalized like "%scrawl%"
 order by sent_date_year asc
 
+-- To find all letters with a particular body part:
+select lp.letter_id, l.id, l.title, l.item_number, l.repository_id, l.transcription_plain, genlpbp.name as "body part"
+from researchdata_letter l 
+left join researchdata_letterperson lp on l.id = lp.letter_id 
+left join researchdata_letterperson_body_part lpbp on lp.id = lpbp.letterperson_id 
+left join researchdata_slgeneric genlpbp on lpbp.slletterpersonbodypart_id = genlpbp.id 
+where genlpbp.name is 'eyes'
+order by l.sent_date_year 
+
 -- To find letters with word/phrase by rank of author:
 select genrank.name as 'rank of author (persons)', count (*) as 'number of letters'
 from researchdata_letter l
