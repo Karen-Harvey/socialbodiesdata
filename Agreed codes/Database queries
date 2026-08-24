@@ -1,0 +1,4 @@
+-- to list all repositories
+select * 
+from researchdata_slgeneric 
+where id in (select * from researchdata_slletterrepository)
