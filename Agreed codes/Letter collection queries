@@ -19,6 +19,13 @@ WHERE l.transcription_normalized like "%spirit%"
 and collection_id is 301
 order by sent_date_year asc;
 
+-- To count letters with word/phrase by collection:
+select gencol.name as 'collection', count (*) as 'number of letters'
+from researchdata_letter l
+LEFT JOIN researchdata_slgeneric gencol ON l.collection_id = gencol.id
+where l.transcription_normalized LIKE '%out of order%' 
+group by gencol.id;
+
 -- To find letters or persons and lps connected to a particular collection, and their birth dates:
 select DISTINCT p.id, p.first_name, p.last_name, lp.person_other, p.year_of_birth 
 --select *
