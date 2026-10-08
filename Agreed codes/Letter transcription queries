@@ -1,0 +1,16 @@
+** To find all public transcriptions of letters (where no LPs)
+select l.id, l.title
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id
+left join researchdata_letterpublictranscription lpt on l.id = lpt.letter_id 
+where lp.letter_id is NULL and l.transcription_plain is not null
+order by l.id;
+
+** To find letters where no LPs
+select l.id, l.title
+from researchdata_letter l
+left join researchdata_letterperson lp on l.id = lp.letter_id
+where lp.letter_id is NULL 
+order by l.id;
+
+
