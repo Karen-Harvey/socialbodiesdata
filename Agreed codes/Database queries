@@ -2,3 +2,31 @@
 select * 
 from researchdata_slgeneric 
 where id in (select * from researchdata_slletterrepository)
+
+-- to find approved plain transcriptions in the parent letter record without letter persons
+SELECT l.id, l.title
+FROM researchdata_letter l
+WHERE l.transcription_plain IS NOT NULL 
+  AND l.transcription_plain != ''
+  AND NOT EXISTS (
+    SELECT 1 
+    FROM researchdata_letterperson lp 
+    WHERE lp.letter_id = l.id
+  );
+
+-- to find letters which have been transcribed by the public, approved by the project team, but have no plain transcription in the parent letter record
+SELECT l.id, l.title
+FROM researchdata_letter l
+WHERE 
+  EXISTS (
+    SELECT 1
+    FROM researchdata_letterpublictranscription lpt
+    WHERE lpt.letter_id = l.id
+      AND lpt.approved_by_project_team = 1
+  )
+  AND NOT EXISTS (
+    SELECT 1 
+    FROM researchdata_letterperson lp 
+    WHERE lp.letter_id = l.id
+  );
+
